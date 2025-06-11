@@ -1,1 +1,5 @@
 rootProject.name = 'hotel-service'
+
+include 'repository'
+include 'service'
+include 'web'
