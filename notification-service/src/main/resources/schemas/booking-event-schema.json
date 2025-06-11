@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "RoomBookedEvent",
+  "type": "object",
+  "properties": {
+    "bookingId":   { "type": "integer" },
+    "userId":      { "type": "integer" },
+    "roomId":      { "type": "integer" },
+    "checkInDate": { "type": "string", "format": "date" },
+    "checkOutDate":{ "type": "string", "format": "date" },
+    "timestamp":   { "type": "string", "format": "date-time" }
+  },
+  "required": ["bookingId", "userId", "roomId", "checkInDate", "checkOutDate"]
+}

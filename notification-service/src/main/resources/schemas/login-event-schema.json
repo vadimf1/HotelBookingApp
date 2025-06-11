@@ -1,0 +1,13 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "UserLoggedInEvent",
+  "type": "object",
+  "properties": {
+    "userId":      { "type": "integer" },
+    "timestamp":   { "type": "string", "format": "date-time" },
+    "ip":          { "type": "string", "format": "ipv4" },
+    "userAgent":   { "type": "string" },
+    "country":     { "type": "string" }
+  },
+  "required": ["userId", "timestamp", "ip"]
+}
