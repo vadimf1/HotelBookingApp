@@ -4,7 +4,6 @@ import java.time.Instant;
 
 public record UserLoggedInEvent(
         Long userId,
-        String email,
         Instant timestamp,
         String ip,
         String userAgent,

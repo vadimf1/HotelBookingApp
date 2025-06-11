@@ -18,13 +18,7 @@ public class LoginEventListener {
     @KafkaListener(topics = "auth.events.login", groupId = "${spring.kafka.consumer.group-id}")
     public void onUserLogin(UserLoggedInEvent event) {
         UserLoginNotificationDto userLoginNotificationDto = UserLoginNotificationDto.from(event);
-
-        try {
-            log.info("Получено событие логина: {}", event);
-            notificationService.notify(userLoginNotificationDto);
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            throw e;
-        }
+        log.info("Получено событие логина: {}", event);
+        notificationService.notify(userLoginNotificationDto);
     }
 }

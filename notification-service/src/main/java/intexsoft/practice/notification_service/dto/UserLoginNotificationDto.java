@@ -9,7 +9,6 @@ import java.time.Instant;
 
 public record UserLoginNotificationDto(
         @NotNull Long userId,
-        @NotBlank @Email String email,
         @NotBlank String ip,
         @NotBlank String userAgent,
         @NotNull Instant timestamp,
@@ -18,7 +17,6 @@ public record UserLoginNotificationDto(
     public static UserLoginNotificationDto from(UserLoggedInEvent event) {
         return new UserLoginNotificationDto(
                 event.userId(),
-                event.email(),
                 event.ip(),
                 event.userAgent(),
                 event.timestamp(),
