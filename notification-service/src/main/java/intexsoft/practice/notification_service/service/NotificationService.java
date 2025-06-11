@@ -1,7 +1,5 @@
 package intexsoft.practice.notification_service.service;
 
-import intexsoft.practice.notification_service.event.UserLoggedInEvent;
-
-public interface NotificationService {
-    void handleLogin(UserLoggedInEvent event);
+public interface NotificationService<T> {
+    void notify(T dto);
 }
