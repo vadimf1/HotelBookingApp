@@ -11,6 +11,7 @@
 
     <modules>
         <module>notification-service</module>
+        <module>kafka-producer-lib</module>
     </modules>
 
     <properties>
