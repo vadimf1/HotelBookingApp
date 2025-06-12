@@ -1,17 +1,6 @@
-services:
-  postgres:
-    image: postgres:latest
-    restart: always
-    shm_size: 128mb
-    environment:
-      POSTGRES_DB: hotel_db
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
+version: '3.8'
 
+services:
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
     ports:
@@ -47,6 +36,13 @@ services:
       KAFKA_BROKER_CONNECT: kafka:29092
     depends_on:
       - kafka
+
+  mailhog:
+    image: mailhog/mailhog
+    restart: always
+    ports:
+      - "1025:1025"
+      - "8025:8025"
 
 volumes:
   postgres-data: {}
