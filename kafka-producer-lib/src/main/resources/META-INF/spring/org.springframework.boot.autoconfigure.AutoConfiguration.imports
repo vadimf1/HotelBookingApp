@@ -1,1 +1,1 @@
-package intexsoft.practice.kafka_producer_lib.config
+intexsoft.practice.kafka_producer_lib.config.KafkaProducerConfiguration
