@@ -85,6 +85,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-freemarker</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>intexsoft.practice</groupId>
+			<artifactId>kafka-producer-lib</artifactId>
+			<version>1.0.0</version> <!-- версия, которую ты указал в библиотеке -->
+		</dependency>
 	</dependencies>
 
 	<build>
