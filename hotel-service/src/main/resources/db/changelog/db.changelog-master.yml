@@ -3,3 +3,4 @@ databaseChangeLog:
       file: db/changelog/create-tables.sql
   - include:
       file: db/changelog/insert-test-data.sql
+      context: "test"

@@ -2,14 +2,17 @@ package intexsoft.practice.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.UuidGenerator;
+
+import java.util.UUID;
 
 @Builder
 @Data
@@ -19,11 +22,15 @@ import lombok.NoArgsConstructor;
 @Table(name = "amenities")
 public class Amenity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @UuidGenerator
     @Column(name = "id")
-    private Integer id;
+    private UUID id;
 
-    @Column(name = "name", length = 100)
+    @ManyToOne
+    @JoinColumn(name = "amenity_status_id")
+    private AmenityStatus status;
+
+    @Column(name = "name")
     private String name;
 
     @Column(name = "description")
@@ -31,7 +38,4 @@ public class Amenity {
 
     @Column(name = "is_free")
     private Boolean isFree;
-
-    @Column(name = "status")
-    private AmenityStatus status;
 }

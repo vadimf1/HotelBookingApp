@@ -69,7 +69,7 @@ CREATE TABLE rooms (
 --changeset vadim:create_reviews
 CREATE TABLE reviews (
     id UUID PRIMARY KEY,
-    client_id UUID NOT NULL,
+    client_id UUID REFERENCES user_service.clients NOT NULL,
     hotel_id UUID REFERENCES hotels(id) NOT NULL,
     room_id UUID REFERENCES rooms(id),
     rating INT NOT NULL CHECK (rating >= 0 AND rating <= 5),

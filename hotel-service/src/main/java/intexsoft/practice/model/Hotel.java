@@ -8,12 +8,16 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.UuidGenerator;
+
+import java.util.UUID;
 
 @Builder
 @Data
@@ -23,13 +27,17 @@ import lombok.NoArgsConstructor;
 @Table(name = "hotels")
 public class Hotel {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @UuidGenerator
     @Column(name = "id")
-    private Integer id;
+    private UUID id;
 
     @OneToOne
     @JoinColumn(name = "address_id")
     private Address address;
+
+    @ManyToOne
+    @JoinColumn(name = "hotel_status_id")
+    private HotelStatus status;
 
     @Column(name = "name")
     private String name;
@@ -39,10 +47,6 @@ public class Hotel {
 
     @Column(name = "average_rating")
     private Integer averageRating;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status")
-    private HotelStatus status;
 
     @Column(name = "email")
     private String email;
