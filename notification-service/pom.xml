@@ -88,7 +88,7 @@
 		<dependency>
 			<groupId>intexsoft.practice</groupId>
 			<artifactId>kafka-dto-lib</artifactId>
-			<version>1.0.0</version> <!-- версия, которую ты указал в библиотеке -->
+			<version>1.0.0</version> 
 		</dependency>
 	</dependencies>
 
