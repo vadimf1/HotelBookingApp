@@ -9,9 +9,4 @@ public record AccountLoginNotification(
         String ip,
         String userAgent,
         Instant timestamp) implements AppEvent {
-
-    @Override
-    public String topic() {
-        return "auth.events.login";
-    }
 }
