@@ -12,6 +12,7 @@
     <modules>
         <module>notification-service</module>
         <module>kafka-producer-lib</module>
+        <module>kafka-dto-lib</module>
     </modules>
 
     <properties>
