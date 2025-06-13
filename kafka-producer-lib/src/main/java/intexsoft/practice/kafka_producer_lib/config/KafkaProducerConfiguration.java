@@ -1,6 +1,5 @@
 package intexsoft.practice.kafka_producer_lib.config;
 
-import lombok.Setter;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.context.annotation.Bean;
@@ -14,19 +13,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-@Setter
 public class KafkaProducerConfiguration {
 
-    private String bootstrapServers;
-    private String clientId;
-
     @Bean
-    public ProducerFactory<String, Object> producerFactory() {
+    public ProducerFactory<String, Object> producerFactory(KafkaProducerProperties props) {
         Map<String, Object> config = new HashMap<>();
-        config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+        config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, props.getBootstrapServers());
         config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
-        config.put(ProducerConfig.CLIENT_ID_CONFIG, clientId);
+        config.put(ProducerConfig.CLIENT_ID_CONFIG, props.getClientId());
         return new DefaultKafkaProducerFactory<>(config);
     }
 
@@ -34,4 +29,5 @@ public class KafkaProducerConfiguration {
     public KafkaTemplate<String, Object> kafkaTemplate(ProducerFactory<String, Object> factory) {
         return new KafkaTemplate<>(factory);
     }
+
 }
