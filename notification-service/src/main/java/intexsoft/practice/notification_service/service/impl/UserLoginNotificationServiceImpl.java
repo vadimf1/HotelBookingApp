@@ -1,19 +1,18 @@
 package intexsoft.practice.notification_service.service.impl;
 
-import intexsoft.practice.notification_service.dto.UserLoginNotificationDto;
+import intexsoft.practice.dto.notification.AccountLoginNotification;
 import intexsoft.practice.notification_service.service.MailSenderService;
 import intexsoft.practice.notification_service.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class UserLoginNotificationServiceImpl implements NotificationService<UserLoginNotificationDto> {
+public class UserLoginNotificationServiceImpl implements NotificationService<AccountLoginNotification> {
 
     private static Map<Long, String> USER_EMAILS = Map.of(
             1L, "user1@example.com",
@@ -25,13 +24,12 @@ public class UserLoginNotificationServiceImpl implements NotificationService<Use
     private final FreeMarkerMailContentBuilder contentBuilder;
 
     @Override
-    public void notify(UserLoginNotificationDto dto) {
+    public void notify(AccountLoginNotification dto) {
         String email = USER_EMAILS.getOrDefault(dto.userId(), "default@example.com");
 
         String subject = "Новый вход в аккаунт";
         Map<String, Object> model = Map.of(
                 "ip", dto.ip(),
-                "country", dto.country(),
                 "userAgent", dto.userAgent(),
                 "timestamp", dto.timestamp()
         );
