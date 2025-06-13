@@ -2,7 +2,7 @@ package intexsoft.practice.kafka_producer_lib.config;
 
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
@@ -14,16 +14,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-@EnableConfigurationProperties(KafkaProducerProperties.class)
 public class KafkaProducerConfiguration {
 
+    @Value("${kafka.producer.bootstrap-servers}")
+    private String bootstrapServers;
+
+    @Value("${kafka.producer.client-id}")
+    private String clientId;
+
     @Bean
-    public ProducerFactory<String, Object> producerFactory(KafkaProducerProperties props) {
+    public ProducerFactory<String, Object> producerFactory() {
         Map<String, Object> config = new HashMap<>();
-        config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, props.getBootstrapServers());
+        config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
-        config.put(ProducerConfig.CLIENT_ID_CONFIG, props.getClientId());
+        config.put(ProducerConfig.CLIENT_ID_CONFIG, clientId);
         return new DefaultKafkaProducerFactory<>(config);
     }
 
