@@ -1,27 +1,32 @@
 package intexsoft.practice.notification_service.service.impl;
 
 import intexsoft.practice.notification_service.config.IpInfoProperties;
+import intexsoft.practice.notification_service.dto.IpInfoResponse;
 import intexsoft.practice.notification_service.service.IpInfoService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class IpInfoServiceImpl implements IpInfoService {
 
     private final RestTemplate restTemplate;
     private final IpInfoProperties ipInfoProperties;
 
     @Override
-    public String getCountryAndCity(String ip) {
-        String url = ipInfoProperties.getApi() + ip + "/json";
-        Map<String, Object> response = restTemplate.getForObject(url, Map.class);
-        String country = response.getOrDefault("country_name", "").toString();
-        String city = response.getOrDefault("city", "").toString();
+    public IpInfoResponse getIpInfo(String ip) {
+        String url = ipInfoProperties.getApi() + ip;
+        try {
+            return restTemplate.getForObject(url, IpInfoResponse.class);
+        } catch (RestClientException e) {
+            log.error("Ошибка получения информации по IP: {}", ip, e);
+        }
 
-        return country + ", " + city;
+        return new IpInfoResponse();
     }
 }

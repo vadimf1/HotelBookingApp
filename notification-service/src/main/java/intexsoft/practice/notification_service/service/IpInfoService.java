@@ -1,5 +1,7 @@
 package intexsoft.practice.notification_service.service;
 
+import intexsoft.practice.notification_service.dto.IpInfoResponse;
+
 public interface IpInfoService {
-    String getCountryAndCity(String ip);
+    IpInfoResponse getIpInfo(String ip);
 }

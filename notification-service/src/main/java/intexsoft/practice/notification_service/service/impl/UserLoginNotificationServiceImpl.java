@@ -1,6 +1,7 @@
 package intexsoft.practice.notification_service.service.impl;
 
 import intexsoft.practice.dto.notification.AccountLoginNotification;
+import intexsoft.practice.notification_service.dto.IpInfoResponse;
 import intexsoft.practice.notification_service.service.IpInfoService;
 import intexsoft.practice.notification_service.service.MailSenderService;
 import intexsoft.practice.notification_service.service.NotificationService;
@@ -29,14 +30,15 @@ public class UserLoginNotificationServiceImpl implements NotificationService<Acc
     public void notify(AccountLoginNotification dto) {
         String email = USER_EMAILS.getOrDefault(dto.userId(), "default@example.com");
 
-        String location = ipInfoService.getCountryAndCity(dto.ip());
+        IpInfoResponse ipInfoResponse = ipInfoService.getIpInfo(dto.ip());
 
         String subject = "Новый вход в аккаунт";
         Map<String, Object> model = Map.of(
                 "ip", dto.ip(),
                 "userAgent", dto.userAgent(),
                 "timestamp", dto.timestamp(),
-                "country", location
+                "country", ipInfoResponse.getCountry(),
+                "city", ipInfoResponse.getCity()
         );
         String body = contentBuilder.build(LOGIN_TEMPLATE, model);
 
