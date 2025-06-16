@@ -85,6 +85,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-freemarker</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>intexsoft.practice</groupId>
+			<artifactId>kafka-dto-lib</artifactId>
+			<version>1.0.0</version> 
+		</dependency>
 	</dependencies>
 
 	<build>
