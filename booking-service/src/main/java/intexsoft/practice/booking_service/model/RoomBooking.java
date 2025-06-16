@@ -1,8 +1,10 @@
 package intexsoft.practice.booking_service.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -26,18 +28,19 @@ public class RoomBooking {
     @Column(name = "user_id", nullable = false)
     private UUID userId;
 
+    @Column(name = "room_id", nullable = false)
+    private UUID roomId;
+
     @Column(name = "check_in_date", nullable = false)
     private LocalDate checkInDate;
 
     @Column(name = "check_out_date", nullable = false)
     private LocalDate checkOutDate;
 
-    @Column(name = "room_number", nullable = false)
-    private int roomNumber;
-
-    @Column(name = "room_status", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private BookingStatus roomStatus;
+    @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "status_id", referencedColumnName = "status_id", nullable = false)
+    private BookingStatusEntity bookingStatus;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;

@@ -1,5 +1,6 @@
 package intexsoft.practice.booking_service.service.producer;
 
+import intexsoft.practice.booking_service.config.properties.KafkaTopicProperties;
 import intexsoft.practice.booking_service.dto.KafkaBookingEventDTO;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -8,21 +9,24 @@ import org.springframework.stereotype.Service;
 public class KafkaProducerService {
 
     private final KafkaTemplate<String, KafkaBookingEventDTO> kafkaTemplate;
+    private final KafkaTopicProperties kafkaTopicProperties;
 
-    public KafkaProducerService(KafkaTemplate<String, KafkaBookingEventDTO> kafkaTemplate) {
+    public KafkaProducerService(
+            KafkaTemplate<String, KafkaBookingEventDTO> kafkaTemplate,
+            KafkaTopicProperties kafkaTopicProperties) {
         this.kafkaTemplate = kafkaTemplate;
+        this.kafkaTopicProperties = kafkaTopicProperties;
     }
 
     public void sendBookingEvent(KafkaBookingEventDTO eventDTO) {
-        String topic = determineTopicByEventType(eventDTO.getEventType());
-        kafkaTemplate.send(topic, eventDTO);
-    }
+        String topic;
 
-    public String determineTopicByEventType(String eventType) {
-        return switch (eventType) {
-            case "BOOKING_CREATED" -> "booking.created";
-            case "BOOKING_CANCELLED" -> "booking.cancelled";
-            default -> "booking.default";
-        };
+        switch (eventDTO.getEventType()) {
+            case BOOKING_CREATED ->  topic = kafkaTopicProperties.getBookingCreated();
+            case BOOKING_CANCELLED ->  topic = kafkaTopicProperties.getBookingCancelled();
+            default -> throw new IllegalArgumentException("Неизвестный тип события: " +  eventDTO.getEventType());
+        }
+
+        kafkaTemplate.send(topic, eventDTO);
     }
 }

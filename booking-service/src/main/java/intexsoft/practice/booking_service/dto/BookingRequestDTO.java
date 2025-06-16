@@ -14,6 +14,9 @@ public class BookingRequestDTO {
     @NotNull(message = "User ID is required")
     private UUID userId;
 
+    @NotNull(message = "Room ID is required")
+    private UUID roomId;
+
     @NotNull(message = "Check-in date is required")
     @FutureOrPresent(message = "Check-in date must be today or in the future")
     private LocalDate checkInDate;
@@ -21,5 +24,4 @@ public class BookingRequestDTO {
     @NotNull(message = "Check-out date is required")
     @Future(message = "Check-out date must be in the future")
     private LocalDate checkOutDate;
-    private int roomNumber;
 }

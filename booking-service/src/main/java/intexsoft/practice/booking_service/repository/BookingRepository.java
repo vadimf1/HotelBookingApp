@@ -1,9 +1,21 @@
 package intexsoft.practice.booking_service.repository;
 
+import feign.Param;
 import intexsoft.practice.booking_service.model.RoomBooking;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 public interface BookingRepository extends JpaRepository<RoomBooking, UUID> {
+    @Query("SELECT CASE WHEN COUNT(b) > 0 THEN TRUE ELSE FALSE END " +
+            "FROM RoomBooking b " +
+            "WHERE b.roomId =   :roomId AND " +
+            "(b.checkInDate <= :checkOutDate AND b.checkOutDate >= :checkInDate)")
+    boolean existsByRoomIdOverlappingDates(
+            @Param("roomId") UUID roomId,
+            @Param("checkIdDate") LocalDate checkInDate,
+            @Param("checkOutDate") LocalDate checkOutDate
+    );
 }

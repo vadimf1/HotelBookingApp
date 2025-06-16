@@ -65,8 +65,6 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
-### VS Code ###
-.vscode/
 ### OS / Misc ###
 .DS_Store
 Thumbs.db
