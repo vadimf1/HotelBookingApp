@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/hotel_db?stringtype=unspecified
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+    properties:
+      hibernate.default_schema: hotel_service
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master.yml
+    default-schema: hotel_service
