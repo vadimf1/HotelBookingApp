@@ -2,7 +2,10 @@ package intexsoft.practice.notification_service.service.impl;
 
 import intexsoft.practice.dto.notification.AccountLoginNotification;
 import intexsoft.practice.notification_service.dto.IpInfoResponse;
+import intexsoft.practice.notification_service.entity.LoginNotification;
+import intexsoft.practice.notification_service.mapper.LoginNotificationMapper;
 import intexsoft.practice.notification_service.service.IpInfoService;
+import intexsoft.practice.notification_service.service.LoginNotificationService;
 import intexsoft.practice.notification_service.service.MailSenderService;
 import intexsoft.practice.notification_service.service.NotificationService;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +28,8 @@ public class UserLoginNotificationServiceImpl implements NotificationService<Acc
     private final MailSenderService mailSenderService;
     private final FreeMarkerMailContentBuilder contentBuilder;
     private final IpInfoService ipInfoService;
+    private final LoginNotificationService loginNotificationService;
+    private final LoginNotificationMapper loginNotificationMapper;
 
     @Override
     public void notify(AccountLoginNotification dto) {
@@ -41,6 +46,11 @@ public class UserLoginNotificationServiceImpl implements NotificationService<Acc
                 "city", ipInfoResponse.getCity()
         );
         String body = contentBuilder.build(LOGIN_TEMPLATE, model);
+
+        LoginNotification loginNotification = loginNotificationMapper.toEntity(dto);
+        loginNotification.setCountry(ipInfoResponse.getCountry());
+        loginNotification.setCity(ipInfoResponse.getCity());
+        loginNotificationService.saveLoginNotification(loginNotification);
 
         mailSenderService.sendEmail(email, subject, body);
         log.info("Уведомление отправлено на почту {}", email);

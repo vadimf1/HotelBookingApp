@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -19,8 +20,8 @@ public class LoginNotification {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+    @Column(name = "id", nullable = false, updatable = false)
+    private UUID id;
 
     @Column(name = "ip", nullable = false)
     private String ip;
@@ -37,14 +38,10 @@ public class LoginNotification {
     @Column(name = "user_id", nullable = false)
     private UUID userId;
 
-    @Column(name = "timestamp", nullable = false)
+    @Column(name = "logged_at", nullable = false)
     private Instant loggedAt;
 
     @Column(name = "created_at", nullable = false, updatable = false)
+    @CreationTimestamp
     private Instant createdAt;
-
-    @PrePersist
-    public void prePersist() {
-        this.createdAt = Instant.now();
-    }
 }
