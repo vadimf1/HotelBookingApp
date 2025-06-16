@@ -2,6 +2,7 @@ package intexsoft.practice.notification_service.service.impl;
 
 import intexsoft.practice.notification_service.config.IpInfoProperties;
 import intexsoft.practice.notification_service.dto.IpInfoResponse;
+import intexsoft.practice.notification_service.exception.IpInfoRetrievalException;
 import intexsoft.practice.notification_service.service.IpInfoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,8 +26,7 @@ public class IpInfoServiceImpl implements IpInfoService {
             return restTemplate.getForObject(url, IpInfoResponse.class);
         } catch (RestClientException e) {
             log.error("Ошибка получения информации по IP: {}", ip, e);
+            throw new IpInfoRetrievalException("Не удалось получить информацию по IP: " + ip, e);
         }
-
-        return new IpInfoResponse();
     }
 }
