@@ -41,7 +41,7 @@ public class UserLoginNotificationServiceImpl implements NotificationService<Acc
         Map<String, Object> model = Map.of(
                 "ip", dto.ip(),
                 "userAgent", dto.userAgent(),
-                "timestamp", dto.timestamp(),
+                "timestamp", dto.loggedAt(),
                 "country", ipInfoResponse.getCountry(),
                 "city", ipInfoResponse.getCity()
         );
