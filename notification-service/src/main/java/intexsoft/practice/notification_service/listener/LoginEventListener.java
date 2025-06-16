@@ -14,7 +14,7 @@ public class LoginEventListener {
 
     private final NotificationService<AccountLoginNotification> notificationService;
 
-    @KafkaListener(topics = "auth.events.login", groupId = "${spring.kafka.consumer.group-id}")
+    @KafkaListener(topics = "${spring.kafka.topic}", groupId = "${spring.kafka.consumer.group-id}")
     public void onUserLogin(AccountLoginNotification event) {
         log.info("Получено событие логина: {}", event);
         notificationService.notify(event);
