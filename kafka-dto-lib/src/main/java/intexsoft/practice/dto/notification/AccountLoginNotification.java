@@ -8,6 +8,6 @@ import java.util.UUID;
 public record AccountLoginNotification(
         UUID userId,
         String ip,
-        UUID userAgent,
+        String userAgent,
         Instant loggedAt) implements AppEvent {
 }
