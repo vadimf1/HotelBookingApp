@@ -11,15 +11,15 @@ subprojects {
     }
 }
 
-task buildNotificationService(type: Exec) {
+task buildParentPom(type: Exec) {
     group = 'build'
-    description = 'Build notification-service via Maven'
-    workingDir = file('notification-service')
-    commandLine 'mvn', 'clean', 'install'
+    description = 'Build and install root Maven pom (hotel-booking-app)'
+    workingDir = projectDir
+    commandLine '/opt/homebrew/bin/mvn', 'clean', 'install'
 }
 
 task buildAll {
     group = 'build'
-    description = 'Build all projects (Gradle + Maven)'
-    dependsOn ':hotel-service:build', 'buildNotificationService'
+    description = 'Build all projects (root pom + hotel-service)'
+    dependsOn buildParentPom, ':hotel-service:build'
 }
