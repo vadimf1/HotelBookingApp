@@ -18,13 +18,6 @@ public class RoomBooking {
     @Column(name = "booking_id")
     private UUID bookingId;
 
-    @PrePersist
-    public void generateId() {
-        if (this.bookingId == null) {
-            this.bookingId = UUID.randomUUID();
-        }
-    }
-
     @Column(name = "user_id", nullable = false)
     private UUID userId;
 
@@ -44,4 +37,13 @@ public class RoomBooking {
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
+
+    @PrePersist
+    public void generateData() {
+        if (this.bookingId == null) {
+            this.bookingId = UUID.randomUUID();
+        }
+
+        this.createdAt = LocalDateTime.now();
+    }
 }

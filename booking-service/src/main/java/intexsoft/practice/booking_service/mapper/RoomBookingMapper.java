@@ -4,33 +4,29 @@ import intexsoft.practice.booking_service.dto.BookingRequestDTO;
 import intexsoft.practice.booking_service.dto.BookingResponseDTO;
 import intexsoft.practice.booking_service.model.BookingStatusEntity;
 import intexsoft.practice.booking_service.model.RoomBooking;
+import org.mapstruct.*;
 
-import java.time.LocalDateTime;
+@Mapper(componentModel = "spring")
+public interface RoomBookingMapper {
 
-public class RoomBookingMapper {
+    @Mapping(source = "requestDTO.userId", target = "userId")
+    @Mapping(source = "requestDTO.roomId", target = "roomId")
+    @Mapping(source = "requestDTO.checkInDate", target = "checkInDate")
+    @Mapping(source = "requestDTO.checkOutDate", target = "checkOutDate")
+    RoomBooking partialToEntity(BookingRequestDTO requestDTO);
 
-    public static RoomBooking toEntity(BookingRequestDTO requestDTO, BookingStatusEntity bookingStatus) {
-        RoomBooking roomBooking = new RoomBooking();
-        roomBooking.setUserId(requestDTO.getUserId());
-        roomBooking.setRoomId(requestDTO.getRoomId());
-        roomBooking.setCheckInDate(requestDTO.getCheckInDate());
-        roomBooking.setCheckOutDate(requestDTO.getCheckOutDate());
+    default RoomBooking toEntity(BookingRequestDTO requestDTO, BookingStatusEntity bookingStatus) {
+        RoomBooking roomBooking = partialToEntity(requestDTO);
         roomBooking.setBookingStatus(bookingStatus);
-        roomBooking.setCreatedAt(LocalDateTime.now());
-
         return roomBooking;
     }
 
-    public static BookingResponseDTO toDTO(RoomBooking roomBooking) {
-        BookingResponseDTO responseDTO = new BookingResponseDTO();
-        responseDTO.setBookingId(roomBooking.getBookingId());
-        responseDTO.setUserId(roomBooking.getUserId());
-        responseDTO.setRoomId(roomBooking.getRoomId());
-        responseDTO.setCheckInDate(roomBooking.getCheckInDate());
-        responseDTO.setCheckOutDate(roomBooking.getCheckOutDate());
-        responseDTO.setBookingStatus(roomBooking.getBookingStatus());
-        responseDTO.setCreatedAt(roomBooking.getCreatedAt());
-
-        return responseDTO;
-    }
+    @Mapping(source = "roomBooking.bookingId", target = "bookingId")
+    @Mapping(source = "roomBooking.userId", target = "userId")
+    @Mapping(source = "roomBooking.roomId", target = "roomId")
+    @Mapping(source = "roomBooking.checkInDate", target = "checkInDate")
+    @Mapping(source = "roomBooking.checkOutDate", target = "checkOutDate")
+    @Mapping(source = "roomBooking.bookingStatus", target = "bookingStatus")
+    @Mapping(source = "roomBooking.createdAt", target = "createdAt")
+    BookingResponseDTO toDTO(RoomBooking roomBooking);
 }

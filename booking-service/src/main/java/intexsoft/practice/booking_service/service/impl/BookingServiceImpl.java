@@ -3,6 +3,7 @@ package intexsoft.practice.booking_service.service.impl;
 import intexsoft.practice.booking_service.dto.BookingRequestDTO;
 import intexsoft.practice.booking_service.dto.BookingResponseDTO;
 import intexsoft.practice.booking_service.dto.KafkaBookingEventDTO;
+import intexsoft.practice.booking_service.exception.InvalidBookingRequestException;
 import intexsoft.practice.booking_service.mapper.KafkaEventMapper;
 import intexsoft.practice.booking_service.mapper.RoomBookingMapper;
 import intexsoft.practice.booking_service.model.BookingStatus;
@@ -24,25 +25,31 @@ public class BookingServiceImpl implements BookingService {
     private final BookingRepository bookingRepository;
     private final BookingStatusRepository bookingStatusRepository;
     private final KafkaProducerService kafkaProducerService;
+    private final RoomBookingMapper roomBookingMapper;
+    private final KafkaEventMapper kafkaEventMapper;
 
     @Override
     public BookingResponseDTO createBooking(BookingRequestDTO requestDTO) {
+        if (requestDTO.getCheckInDate().isAfter(requestDTO.getCheckOutDate())) {
+            throw new IllegalArgumentException("Дата заселения не должна быть позже даты выезда");
+        }
+
         if (bookingRepository.existsByRoomIdOverlappingDates(
                 requestDTO.getRoomId(), requestDTO.getCheckInDate(), requestDTO.getCheckOutDate())) {
-            throw new RuntimeException("Номер уже занят на указанные даты");
+            throw new InvalidBookingRequestException("Номер уже занят на указанные даты");
         }
 
         BookingStatusEntity bookingStatus = bookingStatusRepository.findByCode(BookingStatus.CONFIRMED)
-                .orElseThrow(() -> new RuntimeException("Статус не найден"));
+                .orElseThrow(() -> new IllegalStateException("Статус не найден"));
 
-        RoomBooking roomBooking = RoomBookingMapper.toEntity(requestDTO, bookingStatus);
+        RoomBooking roomBooking = roomBookingMapper.toEntity(requestDTO, bookingStatus);
 
-        RoomBooking savedBooking = bookingRepository.save(roomBooking);
+        roomBooking = bookingRepository.save(roomBooking);
 
-        KafkaBookingEventDTO eventDTO = KafkaEventMapper.toKafkaEventWithCreatedType(savedBooking);
+        KafkaBookingEventDTO eventDTO = kafkaEventMapper.toKafkaEventDTOWithCreatedType(roomBooking);
 
         kafkaProducerService.sendBookingEvent(eventDTO);
 
-        return RoomBookingMapper.toDTO(savedBooking);
+        return roomBookingMapper.toDTO(roomBooking);
     }
 }

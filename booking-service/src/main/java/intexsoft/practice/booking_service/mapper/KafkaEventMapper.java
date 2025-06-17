@@ -1,36 +1,23 @@
 package intexsoft.practice.booking_service.mapper;
 
 import intexsoft.practice.booking_service.dto.KafkaBookingEventDTO;
-import intexsoft.practice.booking_service.dto.KafkaEventType;
 import intexsoft.practice.booking_service.model.RoomBooking;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-import java.time.LocalDateTime;
+@Mapper(componentModel = "spring")
+public interface KafkaEventMapper {
 
-public class KafkaEventMapper {
+    @Mapping(source = "roomBooking.bookingId", target = "bookingId")
+    @Mapping(source = "roomBooking.userId", target = "userId")
+    @Mapping(source = "roomBooking.roomId", target = "roomId")
+    @Mapping(source = "roomBooking.checkInDate", target = "checkInDate")
+    @Mapping(source = "roomBooking.checkOutDate", target = "checkOutDate")
+    KafkaBookingEventDTO toKafkaEventDTO(RoomBooking roomBooking);
 
-    private static KafkaBookingEventDTO toKafkaEvent(RoomBooking roomBooking) {
-        KafkaBookingEventDTO eventDTO = new KafkaBookingEventDTO();
-        eventDTO.setBookingId(roomBooking.getBookingId());
-        eventDTO.setRoomId(roomBooking.getRoomId());
-        eventDTO.setUserId(roomBooking.getUserId());
-        eventDTO.setCheckInDate(roomBooking.getCheckInDate());
-        eventDTO.setCheckOutDate(roomBooking.getCheckOutDate());
-        eventDTO.setEventTime(LocalDateTime.now());
+    @Mapping(target = "eventType", constant = "BOOKING_CREATED")
+    KafkaBookingEventDTO toKafkaEventDTOWithCreatedType(RoomBooking roomBooking);
 
-        return eventDTO;
-    }
-
-    public static KafkaBookingEventDTO toKafkaEventWithCreatedType(RoomBooking roomBooking) {
-        KafkaBookingEventDTO eventDTO = toKafkaEvent(roomBooking);
-        eventDTO.setEventType(KafkaEventType.BOOKING_CREATED);
-
-        return eventDTO;
-    }
-
-    public static KafkaBookingEventDTO toKafkaEventWithCancelledType(RoomBooking roomBooking) {
-        KafkaBookingEventDTO eventDTO = toKafkaEvent(roomBooking);
-        eventDTO.setEventType(KafkaEventType.BOOKING_CANCELLED);
-
-        return eventDTO;
-    }
+    @Mapping(target = "eventType", constant = "BOOKING_CANCELLED")
+    KafkaBookingEventDTO toKafkaEventDTOWithCancelledType(RoomBooking roomBooking);
 }
