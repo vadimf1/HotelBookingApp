@@ -11,14 +11,14 @@ subprojects {
     }
 }
 
-task buildParentPom(type: Exec) {
+tasks.register('buildParentPom', Exec) {
     group = 'build'
     description = 'Build and install root Maven pom (hotel-booking-app)'
     workingDir = projectDir
-    commandLine '/opt/homebrew/bin/mvn', 'clean', 'install'
+    commandLine 'mvn', 'clean', 'install'
 }
 
-task buildAll {
+tasks.register('buildAll') {
     group = 'build'
     description = 'Build all projects (root pom + hotel-service)'
     dependsOn buildParentPom, ':hotel-service:build'
