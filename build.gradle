@@ -1,0 +1,25 @@
+plugins {
+    id 'base'
+}
+
+subprojects {
+    group = 'intexsoft.practice'
+    version = '1.0.0'
+
+    repositories {
+        mavenCentral()
+    }
+}
+
+task buildNotificationService(type: Exec) {
+    group = 'build'
+    description = 'Build notification-service via Maven'
+    workingDir = file('notification-service')
+    commandLine 'mvn', 'clean', 'install'
+}
+
+task buildAll {
+    group = 'build'
+    description = 'Build all projects (Gradle + Maven)'
+    dependsOn ':hotel-service:build', 'buildNotificationService'
+}
