@@ -2,7 +2,6 @@ package intexsoft.practice.booking_service.service.impl;
 
 import intexsoft.practice.booking_service.dto.BookingRequestDTO;
 import intexsoft.practice.booking_service.dto.BookingResponseDTO;
-import intexsoft.practice.booking_service.dto.KafkaBookingEventDTO;
 import intexsoft.practice.booking_service.exception.InvalidBookingRequestException;
 import intexsoft.practice.booking_service.mapper.KafkaEventMapper;
 import intexsoft.practice.booking_service.mapper.RoomBookingMapper;
@@ -12,7 +11,8 @@ import intexsoft.practice.booking_service.model.RoomBooking;
 import intexsoft.practice.booking_service.repository.BookingRepository;
 import intexsoft.practice.booking_service.repository.BookingStatusRepository;
 import intexsoft.practice.booking_service.service.BookingService;
-import intexsoft.practice.booking_service.service.producer.KafkaProducerService;
+import intexsoft.practice.booking_service_kafka_producer.dto.KafkaBookingEventDTO;
+import intexsoft.practice.booking_service_kafka_producer.service.KafkaProducerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

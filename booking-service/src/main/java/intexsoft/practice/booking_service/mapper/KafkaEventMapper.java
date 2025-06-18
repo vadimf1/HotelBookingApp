@@ -1,7 +1,7 @@
 package intexsoft.practice.booking_service.mapper;
 
-import intexsoft.practice.booking_service.dto.KafkaBookingEventDTO;
 import intexsoft.practice.booking_service.model.RoomBooking;
+import intexsoft.practice.booking_service_kafka_producer.dto.KafkaBookingEventDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

@@ -1,6 +1,6 @@
 package intexsoft.practice.booking_service.dto;
 
-import intexsoft.practice.booking_service.model.BookingStatusEntity;
+import intexsoft.practice.booking_service.model.BookingStatus;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -16,7 +16,7 @@ public class BookingResponseDTO {
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
 
-    private BookingStatusEntity bookingStatus;
+    private BookingStatus bookingStatus;
 
     private LocalDateTime createdAt;
 }
