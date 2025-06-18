@@ -2,8 +2,10 @@ package intexsoft.practice.booking_service.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -15,6 +17,7 @@ import java.util.UUID;
 public class RoomBooking {
 
     @Id
+    @UuidGenerator
     @Column(name = "booking_id")
     private UUID bookingId;
 
@@ -36,14 +39,7 @@ public class RoomBooking {
     private BookingStatusEntity bookingStatus;
 
     @Column(name = "created_at", nullable = false, updatable = false)
+    @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @PrePersist
-    public void generateData() {
-        if (this.bookingId == null) {
-            this.bookingId = UUID.randomUUID();
-        }
-
-        this.createdAt = LocalDateTime.now();
-    }
 }

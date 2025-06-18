@@ -11,7 +11,7 @@ import intexsoft.practice.booking_service.model.RoomBooking;
 import intexsoft.practice.booking_service.repository.BookingRepository;
 import intexsoft.practice.booking_service.repository.BookingStatusRepository;
 import intexsoft.practice.booking_service.service.BookingService;
-import intexsoft.practice.booking_service_kafka_producer.dto.KafkaBookingEventDTO;
+import intexsoft.practice.booking_service_kafka_dto.dto.KafkaBookingEventDTO;
 import intexsoft.practice.booking_service_kafka_producer.service.KafkaProducerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

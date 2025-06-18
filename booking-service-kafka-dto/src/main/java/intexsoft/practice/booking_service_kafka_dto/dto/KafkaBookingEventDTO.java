@@ -1,4 +1,4 @@
-package intexsoft.practice.booking_service_kafka_producer.dto;
+package intexsoft.practice.booking_service_kafka_dto.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;

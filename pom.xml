@@ -15,6 +15,7 @@
         <module>kafka-dto-lib</module>
         <module>booking-service</module>
         <module>booking-service-kafka-producer</module>
+        <module>booking-service-kafka-dto</module>
     </modules>
 
     <properties>
