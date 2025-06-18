@@ -2,16 +2,18 @@ package intexsoft.practice.booking_service.model;
 
 import jakarta.persistence.*;
 import jakarta.persistence.Table;
-import lombok.Data;
+import lombok.*;
 import org.hibernate.annotations.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Getter
+@Setter
+@ToString
 @Entity
 @Table(name = "bookings")
-@Data
 public class RoomBooking {
 
     @Id

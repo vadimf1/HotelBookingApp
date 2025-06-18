@@ -3,12 +3,14 @@ package intexsoft.practice.booking_service.dto;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
+@ToString
 public class BookingRequestDTO {
 
     @NotNull(message = "User ID is required")

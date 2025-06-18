@@ -1,13 +1,15 @@
 package intexsoft.practice.booking_service.dto;
 
 import intexsoft.practice.booking_service.model.BookingStatus;
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
+@ToString
 public class BookingResponseDTO {
 
     private UUID bookingId;

@@ -18,8 +18,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -34,26 +32,45 @@ public class BookingServiceImpl implements BookingService {
     @Override
     @Transactional
     public BookingResponseDTO createBooking(BookingRequestDTO requestDTO) {
+
+        validateDates(requestDTO);
+
+        checkRoomVailability(requestDTO);
+
+        BookingStatusEntity bookingStatus = bookingStatusService.getByCode(BookingStatus.CONFIRMED);
+
+        RoomBooking roomBooking = saveBooking(requestDTO, bookingStatus);
+
+        sendKafkaEvent(roomBooking);
+
+        return roomBookingMapper.toDTO(roomBooking);
+    }
+
+    private void validateDates(BookingRequestDTO requestDTO) {
         if (requestDTO.getCheckInDate().isAfter(requestDTO.getCheckOutDate())) {
             throw new IllegalArgumentException("Дата заселения не должна быть позже даты выезда");
         }
+    }
 
+    private void checkRoomVailability(BookingRequestDTO requestDTO) {
         if (bookingRepository.existsByRoomIdOverlappingDates(
                 requestDTO.getRoomId(), requestDTO.getCheckInDate(), requestDTO.getCheckOutDate())) {
             throw new InvalidBookingRequestException("Номер уже занят на указанные даты");
         }
+    }
 
-        BookingStatusEntity bookingStatus = bookingStatusService.getByCode(BookingStatus.CONFIRMED);
-
+    private RoomBooking saveBooking(BookingRequestDTO requestDTO, BookingStatusEntity bookingStatus) {
         RoomBooking roomBooking = roomBookingMapper.toEntity(requestDTO, bookingStatus);
 
         roomBooking = bookingRepository.save(roomBooking);
         bookingRepository.flush();
 
+        return roomBooking;
+    }
+
+    private void sendKafkaEvent(RoomBooking roomBooking) {
         KafkaBookingEventDTO eventDTO = kafkaEventMapper.toKafkaEventDTOWithCreatedType(roomBooking);
 
         kafkaProducerService.sendBookingEvent(eventDTO);
-
-        return roomBookingMapper.toDTO(roomBooking);
     }
 }

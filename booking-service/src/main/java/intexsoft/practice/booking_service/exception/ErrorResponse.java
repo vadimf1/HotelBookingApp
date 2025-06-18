@@ -1,11 +1,12 @@
 package intexsoft.practice.booking_service.exception;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
+@ToString
 @AllArgsConstructor
 public class ErrorResponse {
 

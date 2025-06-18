@@ -1,11 +1,13 @@
 package intexsoft.practice.booking_service.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
+@ToString
 @Entity
 @Table(name = "booking_status")
 public class BookingStatusEntity {
