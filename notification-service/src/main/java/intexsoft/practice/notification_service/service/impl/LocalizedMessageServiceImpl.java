@@ -17,7 +17,7 @@ public class LocalizedMessageServiceImpl implements LocalizedMessageService {
     private final MessageSource messageSource;
 
     @Override
-    public String get(String code, Locale locale) {
+    public String getLocalizedMessage(String code, Locale locale) {
         return messageSource.getMessage(code, null, "unknown", locale);
     }
 
@@ -26,7 +26,7 @@ public class LocalizedMessageServiceImpl implements LocalizedMessageService {
         return keys.stream()
                 .collect(Collectors.toMap(
                         key -> key,
-                        key -> get(key, locale)
+                        key -> getLocalizedMessage(key, locale)
                 ));
     }
 }

@@ -5,6 +5,6 @@ import java.util.Locale;
 import java.util.Map;
 
 public interface LocalizedMessageService {
-    String get(String code, Locale locale);
+    String getLocalizedMessage(String code, Locale locale);
     Map<String, String> getBulk(List<String> keys, Locale locale);
 }
