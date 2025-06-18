@@ -1,9 +1,9 @@
-Привет!
+${msg["login.title"]}
 
-Кто-то вошёл в ваш аккаунт:
+${msg["login.body"]}
 
-IP: ${ip}
-Страна: ${country!"неизвестна"}
-Город: ${city!"неизвестен"}
-Агент: ${userAgent}
-Время: ${timestamp}
+${msg["ip.label"]}: ${ip}
+${msg["country.label"]}: ${country!msg["unknown"]}
+${msg["city.label"]}: ${city!msg["unknown"]}
+${msg["agent.label"]}: ${userAgent}
+${msg["time.label"]}: ${timestamp}
