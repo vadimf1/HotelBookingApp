@@ -1,17 +1,18 @@
 package intexsoft.practice.notification_service.service.impl;
 
 import intexsoft.practice.dto.notification.AccountLoginNotification;
+import intexsoft.practice.notification_service.config.CountryLocaleProperties;
 import intexsoft.practice.notification_service.dto.IpInfoResponse;
 import intexsoft.practice.notification_service.entity.LoginNotification;
 import intexsoft.practice.notification_service.mapper.LoginNotificationMapper;
-import intexsoft.practice.notification_service.service.IpInfoService;
-import intexsoft.practice.notification_service.service.LoginNotificationService;
-import intexsoft.practice.notification_service.service.MailSenderService;
-import intexsoft.practice.notification_service.service.NotificationService;
+import intexsoft.practice.notification_service.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 @Service
@@ -19,32 +20,43 @@ import java.util.Map;
 @Slf4j
 public class UserLoginNotificationServiceImpl implements NotificationService<AccountLoginNotification> {
 
-    private static Map<Long, String> USER_EMAILS = Map.of(
-            1L, "user1@example.com",
-            2L, "user2@example.com"
-    );
-
     private static final String LOGIN_TEMPLATE = "login-notification.ftl";
     private final MailSenderService mailSenderService;
     private final FreeMarkerMailContentBuilder contentBuilder;
     private final IpInfoService ipInfoService;
     private final LoginNotificationService loginNotificationService;
     private final LoginNotificationMapper loginNotificationMapper;
+    private final LocalizedMessageService localizedMessageService;
+    private final CountryLocaleProperties countryLocaleProperties;
 
     @Override
     public void notify(AccountLoginNotification dto) {
-        String email = USER_EMAILS.getOrDefault(dto.userId(), "default@example.com");
+        String email = "default@example.com";
 
         IpInfoResponse ipInfoResponse = ipInfoService.getIpInfo(dto.ip());
 
         String subject = "Новый вход в аккаунт";
-        Map<String, Object> model = Map.of(
-                "ip", dto.ip(),
-                "userAgent", dto.userAgent(),
-                "timestamp", dto.loggedAt(),
-                "country", ipInfoResponse.getCountry(),
-                "city", ipInfoResponse.getCity()
-        );
+
+        Map<String, Object> model = new HashMap<>();
+        model.put("ip", dto.ip());
+        model.put("userAgent", dto.userAgent());
+        model.put("timestamp", dto.loggedAt());
+        model.put("country", ipInfoResponse.getCountry());
+        model.put("city", ipInfoResponse.getCity());
+
+        Locale locale = countryLocaleProperties.getLocale(ipInfoResponse.getCountryCode());
+        Map<String, String> msg = localizedMessageService.getBulk(List.of(
+                "login.title",
+                "login.body",
+                "ip.label",
+                "country.label",
+                "city.label",
+                "agent.label",
+                "time.label",
+                "unknown"
+        ), locale);
+        model.put("msg", msg);
+
         String body = contentBuilder.build(LOGIN_TEMPLATE, model);
 
         LoginNotification loginNotification = loginNotificationMapper.toEntity(dto);
