@@ -1,6 +1,5 @@
 package intexsoft.practice.notification_service;
 
-import intexsoft.practice.notification_service.config.CountryLocaleProperties;
 import intexsoft.practice.notification_service.config.IpInfoProperties;
 import intexsoft.practice.notification_service.config.MailProperties;
 import org.springframework.boot.SpringApplication;
@@ -10,7 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication()
-@EnableConfigurationProperties({MailProperties.class, IpInfoProperties.class, CountryLocaleProperties.class})
+@EnableConfigurationProperties({MailProperties.class, IpInfoProperties.class})
 public class NotificationServiceApplication {
 
 	public static void main(String[] args) {
