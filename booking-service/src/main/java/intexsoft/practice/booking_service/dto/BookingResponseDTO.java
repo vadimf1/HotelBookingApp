@@ -15,8 +15,6 @@ public class BookingResponseDTO {
     private UUID roomId;
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
-
     private BookingStatus bookingStatus;
-
     private LocalDateTime createdAt;
 }

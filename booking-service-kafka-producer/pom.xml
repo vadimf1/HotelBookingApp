@@ -5,7 +5,7 @@
 
 	<groupId>intexsoft.practice</groupId>
 	<artifactId>booking-service-kafka-producer</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<packaging>jar</packaging>
 
 	<name>booking-service-kafka-producer</name>
@@ -60,11 +60,11 @@
 			<version>3.5.0</version>
 			<scope>compile</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>intexsoft.practice</groupId>
 			<artifactId>booking-service-kafka-dto</artifactId>
 			<version>1.0.0</version>
-			<scope>compile</scope>
 		</dependency>
 
 	</dependencies>

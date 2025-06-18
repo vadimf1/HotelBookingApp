@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>intexsoft.practice</groupId>
 	<artifactId>booking_service</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>booking_service</name>
 	<description>intexsoft practice booking services</description>
 	<url/>
@@ -106,7 +106,7 @@
 		<dependency>
 			<groupId>intexsoft.practice</groupId>
 			<artifactId>booking-service-kafka-producer</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>1.0.0</version>
 		</dependency>
 
     </dependencies>
