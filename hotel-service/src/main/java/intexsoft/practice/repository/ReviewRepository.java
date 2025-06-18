@@ -1,9 +1,9 @@
 package intexsoft.practice.repository;
 
-import intexsoft.practice.model.Room;
+import intexsoft.practice.model.Review;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;
 
-public interface RoomRepository extends JpaRepository<Room, UUID> {
+public interface ReviewRepository extends JpaRepository<Review, UUID> {
 }

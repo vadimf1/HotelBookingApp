@@ -28,7 +28,7 @@ public class Amenity {
 
     @ManyToOne
     @JoinColumn(name = "amenity_status_id")
-    private AmenityStatus status;
+    private AmenityStatus amenityStatus;
 
     @Column(name = "name")
     private String name;

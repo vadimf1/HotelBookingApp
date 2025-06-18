@@ -5,9 +5,8 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
-public enum AddressExceptionCode {
-    ID_FIELD_EXPECTED_NULL("ID field expected null"),
-    ADDRESS_NOT_FOUNT_BY_ID("Address not found with ID: ");
+public enum ClientExceptionCode {
+    CLIENT_NOT_FOUNT_BY_ID("Client not found with ID: ");
 
     private final String message;
 }

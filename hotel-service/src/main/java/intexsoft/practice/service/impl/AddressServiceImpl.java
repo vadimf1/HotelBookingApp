@@ -1,6 +1,7 @@
 package intexsoft.practice.service.impl;
 
 import intexsoft.practice.dto.AddressDto;
+import intexsoft.practice.dto.UpdateAddressDto;
 import intexsoft.practice.exception.ServiceException;
 import intexsoft.practice.mapper.AddressMapper;
 import intexsoft.practice.model.Address;
@@ -41,23 +42,12 @@ public class AddressServiceImpl implements AddressService {
                 .orElseThrow(() -> new ServiceException(AddressExceptionCode.ADDRESS_NOT_FOUNT_BY_ID.getMessage() + id));
     }
 
-    public void updateAddress(AddressDto addressDto) {
-        if (addressDto.getId() == null) {
-            throw new ServiceException(AddressExceptionCode.ID_FIELD_IS_NULL.getMessage());
-        }
-        Address address = addressRepository.findById(addressDto.getId())
-                .orElseThrow(() -> new ServiceException(AddressExceptionCode.ADDRESS_NOT_FOUNT_BY_ID.getMessage() + addressDto.getId()));
+    public void updateAddress(UUID id, UpdateAddressDto updateAddressDto) {
+        Address address = addressRepository.findById(id)
+                .orElseThrow(() -> new ServiceException(AddressExceptionCode.ADDRESS_NOT_FOUNT_BY_ID.getMessage() + id));
 
-        Address updatedAddress = Address.builder()
-                .id(addressDto.getId())
-                .country(addressDto.getCountry() != null ? addressDto.getCountry() : address.getCountry())
-                .state(addressDto.getState() != null ? addressDto.getState() : address.getState())
-                .city(addressDto.getCity() != null ? addressDto.getCity() : address.getCity())
-                .street(addressDto.getStreet() != null ? addressDto.getStreet() : address.getStreet())
-                .postalCode(addressDto.getPostalCode() != null ? addressDto.getPostalCode() : address.getPostalCode())
-                .build();
-
-        addressRepository.save(updatedAddress);
+        addressMapper.updateEntityFromDto(updateAddressDto, address);
+        addressRepository.save(address);
     }
 
     public void deleteAddressById(UUID id) {

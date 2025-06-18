@@ -8,6 +8,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -17,6 +19,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.UuidGenerator;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Builder
@@ -37,7 +41,7 @@ public class Hotel {
 
     @ManyToOne
     @JoinColumn(name = "hotel_status_id")
-    private HotelStatus status;
+    private HotelStatus hotelStatus;
 
     @Column(name = "name")
     private String name;
@@ -56,4 +60,19 @@ public class Hotel {
 
     @Column(name = "website")
     private String website;
+
+    @ManyToMany
+    @JoinTable(
+            name = "hotel_amenities",
+            joinColumns = @JoinColumn(name = "hotel_id"),
+            inverseJoinColumns = @JoinColumn(name = "amenity_id")
+    )
+    private Set<Amenity> amenities;
+
+    public void addAmenity(Amenity amenity) {
+        if (amenities == null) {
+            amenities = new HashSet<>();
+        }
+        amenities.add(amenity);
+    }
 }
