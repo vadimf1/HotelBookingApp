@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Getter
 @Setter
-public class RoomProducerProperties {
+public class KafkaProducerProperties {
     private String topic;
     private String bootstrapServers;
     private String clientId;

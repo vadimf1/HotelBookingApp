@@ -13,10 +13,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-public class RoomProducerAutoConfiguration {
+public class KafkaProducerConfiguration {
 
     @Bean
-    public ProducerFactory<String, Object> producerFactory(RoomProducerProperties props) {
+    public ProducerFactory<String, Object> producerFactory(KafkaProducerProperties props) {
         Map<String, Object> config = new HashMap<>();
         config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, props.getBootstrapServers());
         config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
@@ -29,5 +29,4 @@ public class RoomProducerAutoConfiguration {
     public KafkaTemplate<String, Object> kafkaTemplate(ProducerFactory<String, Object> factory) {
         return new KafkaTemplate<>(factory);
     }
-
 }
