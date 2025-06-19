@@ -5,10 +5,9 @@ import intexsoft.practice.booking_service.dto.BookingResponseDTO;
 import intexsoft.practice.booking_service.service.BookingService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/bookings")
@@ -24,5 +23,10 @@ public class BookingController {
     @PostMapping
     public BookingResponseDTO createBooking(@Valid @RequestBody BookingRequestDTO requestDTO) {
         return bookingService.createBooking(requestDTO);
+    }
+
+    @PutMapping("cancel/{bookingId}")
+    public BookingResponseDTO cancelBooking(@PathVariable UUID bookingId) {
+        return bookingService.cancelBooking(bookingId);
     }
 }

@@ -11,7 +11,8 @@ import java.util.UUID;
 public interface BookingRepository extends JpaRepository<RoomBooking, UUID> {
     @Query("SELECT CASE WHEN COUNT(b) > 0 THEN TRUE ELSE FALSE END " +
             "FROM RoomBooking b " +
-            "WHERE b.roomId =   :roomId AND " +
+            "WHERE b.roomId = :roomId AND " +
+            "b.bookingStatus.code != 'CANCELLED' AND " +
             "(b.checkInDate <= :checkOutDate AND b.checkOutDate >= :checkInDate)")
     boolean existsByRoomIdOverlappingDates(
             @Param("roomId") UUID roomId,

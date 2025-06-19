@@ -41,4 +41,8 @@ public class RoomBooking {
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
+
+    @CreationTimestamp
+    @Column(name = "updated_at", nullable = false, updatable = true)
+    private LocalDateTime updatedAt;
 }

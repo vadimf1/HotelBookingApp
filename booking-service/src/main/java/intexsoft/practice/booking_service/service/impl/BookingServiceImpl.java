@@ -13,10 +13,15 @@ import intexsoft.practice.booking_service.service.BookingService;
 import intexsoft.practice.booking_service.service.BookingStatusService;
 import intexsoft.practice.booking_service_kafka_dto.dto.KafkaBookingEventDTO;
 import intexsoft.practice.booking_service_kafka_producer.service.KafkaProducerService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -35,7 +40,7 @@ public class BookingServiceImpl implements BookingService {
 
         validateDates(requestDTO);
 
-        checkRoomVailability(requestDTO);
+        checkRoomAvailability(requestDTO);
 
         BookingStatusEntity bookingStatus = bookingStatusService.getByCode(BookingStatus.CONFIRMED);
 
@@ -46,13 +51,35 @@ public class BookingServiceImpl implements BookingService {
         return roomBookingMapper.toDTO(roomBooking);
     }
 
+    @Override
+    @Transactional
+    public BookingResponseDTO cancelBooking(UUID bookingId) {
+        RoomBooking roomBooking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new EntityNotFoundException("Бронирование не найдено"));
+
+        if (roomBooking.getCheckOutDate().isBefore(LocalDate.now())) {
+            throw new InvalidBookingRequestException("Нельзя отменить бронирование после даты выезда");
+        }
+
+        BookingStatusEntity bookingStatus = bookingStatusService.getByCode(BookingStatus.CANCELLED);
+
+        roomBooking.setBookingStatus(bookingStatus);
+        roomBooking.setUpdatedAt(LocalDateTime.now());
+        roomBooking = bookingRepository.save(roomBooking);
+
+        KafkaBookingEventDTO eventDTO = kafkaEventMapper.toKafkaEventDTOWithCancelledType(roomBooking);
+        kafkaProducerService.sendBookingEvent(eventDTO);
+
+        return roomBookingMapper.toDTO(roomBooking);
+    }
+
     private void validateDates(BookingRequestDTO requestDTO) {
         if (requestDTO.getCheckInDate().isAfter(requestDTO.getCheckOutDate())) {
             throw new IllegalArgumentException("Дата заселения не должна быть позже даты выезда");
         }
     }
 
-    private void checkRoomVailability(BookingRequestDTO requestDTO) {
+    private void checkRoomAvailability(BookingRequestDTO requestDTO) {
         if (bookingRepository.existsByRoomIdOverlappingDates(
                 requestDTO.getRoomId(), requestDTO.getCheckInDate(), requestDTO.getCheckOutDate())) {
             throw new InvalidBookingRequestException("Номер уже занят на указанные даты");

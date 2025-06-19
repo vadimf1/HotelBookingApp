@@ -19,4 +19,5 @@ public class BookingResponseDTO {
     private LocalDate checkOutDate;
     private BookingStatus bookingStatus;
     private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }

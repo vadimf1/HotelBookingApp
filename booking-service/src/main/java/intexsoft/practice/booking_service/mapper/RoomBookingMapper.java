@@ -28,5 +28,6 @@ public interface RoomBookingMapper {
     @Mapping(source = "roomBooking.checkOutDate", target = "checkOutDate")
     @Mapping(source = "roomBooking.bookingStatus.code", target = "bookingStatus")
     @Mapping(source = "roomBooking.createdAt", target = "createdAt")
+    @Mapping(source = "roomBooking.updatedAt", target = "updatedAt")
     BookingResponseDTO toDTO(RoomBooking roomBooking);
 }
