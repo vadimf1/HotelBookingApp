@@ -7,7 +7,7 @@ import intexsoft.practice.mapper.AddressMapper;
 import intexsoft.practice.model.Address;
 import intexsoft.practice.repository.AddressRepository;
 import intexsoft.practice.service.AddressService;
-import intexsoft.practice.util.exceptionCode.AddressExceptionCode;
+import intexsoft.practice.exception.code.AddressExceptionCode;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,11 +22,12 @@ public class AddressServiceImpl implements AddressService {
     private final AddressRepository addressRepository;
     private final AddressMapper addressMapper;
 
-    public void addAddress(AddressDto addressDto) {
+    public AddressDto addAddress(AddressDto addressDto) {
         if (addressDto.getId() != null) {
             throw new ServiceException(AddressExceptionCode.ID_FIELD_EXPECTED_NULL.getMessage());
         }
-        addressRepository.save(addressMapper.toEntity(addressDto));
+        Address savedAddress = addressRepository.save(addressMapper.toEntity(addressDto));
+        return addressMapper.toDto(savedAddress);
     }
 
     public List<AddressDto> getAllAddresses() {
@@ -42,12 +43,13 @@ public class AddressServiceImpl implements AddressService {
                 .orElseThrow(() -> new ServiceException(AddressExceptionCode.ADDRESS_NOT_FOUNT_BY_ID.getMessage() + id));
     }
 
-    public void updateAddress(UUID id, UpdateAddressDto updateAddressDto) {
+    public AddressDto updateAddress(UUID id, UpdateAddressDto updateAddressDto) {
         Address address = addressRepository.findById(id)
                 .orElseThrow(() -> new ServiceException(AddressExceptionCode.ADDRESS_NOT_FOUNT_BY_ID.getMessage() + id));
 
         addressMapper.updateEntityFromDto(updateAddressDto, address);
-        addressRepository.save(address);
+        Address updatedAddress = addressRepository.save(address);
+        return addressMapper.toDto(updatedAddress);
     }
 
     public void deleteAddressById(UUID id) {

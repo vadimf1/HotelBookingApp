@@ -11,10 +11,10 @@ import intexsoft.practice.repository.HotelRepository;
 import intexsoft.practice.repository.ReviewRepository;
 import intexsoft.practice.repository.RoomRepository;
 import intexsoft.practice.service.ReviewService;
-import intexsoft.practice.util.exceptionCode.ClientExceptionCode;
-import intexsoft.practice.util.exceptionCode.HotelExceptionCode;
-import intexsoft.practice.util.exceptionCode.ReviewExceptionCode;
-import intexsoft.practice.util.exceptionCode.RoomExceptionCode;
+import intexsoft.practice.exception.code.ClientExceptionCode;
+import intexsoft.practice.exception.code.HotelExceptionCode;
+import intexsoft.practice.exception.code.ReviewExceptionCode;
+import intexsoft.practice.exception.code.RoomExceptionCode;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,7 +32,7 @@ public class ReviewServiceImpl implements ReviewService {
     private final ReviewMapper reviewMapper;
     private final ClientRepository clientRepository;
 
-    public void addReview(AddReviewDto addReviewDto) {
+    public ResponseReviewDto addReview(AddReviewDto addReviewDto) {
         Review review = reviewMapper.toEntity(addReviewDto);
         review.setHotel(
                 hotelRepository.findById(addReviewDto.getHotelId())
@@ -48,7 +48,8 @@ public class ReviewServiceImpl implements ReviewService {
                 clientRepository.findById(addReviewDto.getClientId())
                         .orElseThrow(() -> new ServiceException(ClientExceptionCode.CLIENT_NOT_FOUNT_BY_ID.getMessage() + addReviewDto.getClientId()))
         );
-        reviewRepository.save(review);
+        Review savedReview = reviewRepository.save(review);
+        return reviewMapper.toDto(savedReview);
     }
 
     public List<ResponseReviewDto> getAllReviews() {
@@ -64,7 +65,7 @@ public class ReviewServiceImpl implements ReviewService {
                 .orElseThrow(() -> new ServiceException(ReviewExceptionCode.REVIEW_NOT_FOUNT_BY_ID.getMessage() + id));
     }
 
-    public void updateReview(UUID id, UpdateReviewDto updateReviewDto) {
+    public ResponseReviewDto updateReview(UUID id, UpdateReviewDto updateReviewDto) {
         Review review = reviewRepository.findById(id)
                 .orElseThrow(() -> new ServiceException(ReviewExceptionCode.REVIEW_NOT_FOUNT_BY_ID.getMessage() + id));
         if (updateReviewDto.getHotelId() != null) {
@@ -88,7 +89,8 @@ public class ReviewServiceImpl implements ReviewService {
             );
         }
         reviewMapper.updateEntityFromDto(updateReviewDto, review);
-        reviewRepository.save(review);
+        Review updatedReview = reviewRepository.save(review);
+        return reviewMapper.toDto(updatedReview);
     }
 
     public void deleteReviewById(UUID id) {

@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.UUID;
 
 public interface HotelService {
-    void addHotel(AddHotelDto addHotelDto);
+    ResponseHotelDto addHotel(AddHotelDto addHotelDto);
     List<ResponseHotelDto> getAllHotels();
     ResponseHotelDto getHotelById(UUID id);
-    void updateHotel(UUID id, UpdateHotelDto updateHotelDto);
+    ResponseHotelDto updateHotel(UUID id, UpdateHotelDto updateHotelDto);
     void deleteHotelById(UUID id);
 }

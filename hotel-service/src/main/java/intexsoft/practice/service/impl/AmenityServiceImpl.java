@@ -9,8 +9,8 @@ import intexsoft.practice.model.Amenity;
 import intexsoft.practice.repository.AmenityRepository;
 import intexsoft.practice.repository.AmenityStatusRepository;
 import intexsoft.practice.service.AmenityService;
-import intexsoft.practice.util.exceptionCode.AmenityExceptionCode;
-import intexsoft.practice.util.exceptionCode.AmenityStatusExceptionCode;
+import intexsoft.practice.exception.code.AmenityExceptionCode;
+import intexsoft.practice.exception.code.AmenityStatusExceptionCode;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,14 +26,15 @@ public class AmenityServiceImpl implements AmenityService {
     private final AmenityStatusRepository amenityStatusRepository;
     private final AmenityMapper amenityMapper;
 
-    public void addAmenity(AddAmenityDto addAmenityDto) {
+    public ResponseAmenityDto addAmenity(AddAmenityDto addAmenityDto) {
         Amenity amenity = amenityMapper.toEntity(addAmenityDto);
 
         amenity.setAmenityStatus(
                 amenityStatusRepository.findById(addAmenityDto.getAmenityStatusId())
                         .orElseThrow(() -> new ServiceException(AmenityStatusExceptionCode.AMENITY_STATUS_NOT_FOUNT_BY_ID.getMessage() + addAmenityDto.getAmenityStatusId()))
         );
-        amenityRepository.save(amenity);
+        Amenity savedAmenity = amenityRepository.save(amenity);
+        return amenityMapper.toDto(savedAmenity);
     }
 
     public List<ResponseAmenityDto> getAllAmenities() {
@@ -49,7 +50,7 @@ public class AmenityServiceImpl implements AmenityService {
                 .orElseThrow(() -> new ServiceException(AmenityExceptionCode.AMENITY_NOT_FOUNT_BY_ID.getMessage() + id));
     }
 
-    public void updateAmenity(UUID id, UpdateAmenityDto updateAmenityDto) {
+    public ResponseAmenityDto updateAmenity(UUID id, UpdateAmenityDto updateAmenityDto) {
         Amenity amenity = amenityRepository.findById(id)
                 .orElseThrow(() -> new ServiceException(AmenityExceptionCode.AMENITY_NOT_FOUNT_BY_ID.getMessage() + id));
 
@@ -61,7 +62,8 @@ public class AmenityServiceImpl implements AmenityService {
         }
 
         amenityMapper.updateEntityFromDto(updateAmenityDto, amenity);
-        amenityRepository.save(amenity);
+        Amenity updatedAmenity = amenityRepository.save(amenity);
+        return amenityMapper.toDto(updatedAmenity);
     }
 
     public void deleteAmenityById(UUID id) {

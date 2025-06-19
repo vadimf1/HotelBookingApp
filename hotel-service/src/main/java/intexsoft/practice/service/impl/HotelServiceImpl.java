@@ -11,10 +11,10 @@ import intexsoft.practice.repository.AmenityRepository;
 import intexsoft.practice.repository.HotelRepository;
 import intexsoft.practice.repository.HotelStatusRepository;
 import intexsoft.practice.service.HotelService;
-import intexsoft.practice.util.exceptionCode.AddressExceptionCode;
-import intexsoft.practice.util.exceptionCode.AmenityExceptionCode;
-import intexsoft.practice.util.exceptionCode.HotelExceptionCode;
-import intexsoft.practice.util.exceptionCode.HotelStatusExceptionCode;
+import intexsoft.practice.exception.code.AddressExceptionCode;
+import intexsoft.practice.exception.code.AmenityExceptionCode;
+import intexsoft.practice.exception.code.HotelExceptionCode;
+import intexsoft.practice.exception.code.HotelStatusExceptionCode;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -33,7 +33,7 @@ public class HotelServiceImpl implements HotelService {
     private final AmenityRepository amenityRepository;
     private final HotelMapper hotelMapper;
 
-    public void addHotel(AddHotelDto addHotelDto) {
+    public ResponseHotelDto addHotel(AddHotelDto addHotelDto) {
         Hotel hotel = hotelMapper.toEntity(addHotelDto);
         hotel.setAddress(
                 addressRepository.findById(addHotelDto.getAddressId())
@@ -50,7 +50,8 @@ public class HotelServiceImpl implements HotelService {
                             .orElseThrow(() -> new ServiceException(AmenityExceptionCode.AMENITY_NOT_FOUNT_BY_ID.getMessage() + amenityId))
             );
         }
-        hotelRepository.save(hotel);
+        Hotel savedHotel = hotelRepository.save(hotel);
+        return hotelMapper.toDto(savedHotel);
     }
 
     public List<ResponseHotelDto> getAllHotels() {
@@ -66,7 +67,7 @@ public class HotelServiceImpl implements HotelService {
                 .orElseThrow(() -> new ServiceException(HotelExceptionCode.HOTEL_NOT_FOUNT_BY_ID.getMessage() + id));
     }
 
-    public void updateHotel(UUID id, UpdateHotelDto updateHotelDto) {
+    public ResponseHotelDto updateHotel(UUID id, UpdateHotelDto updateHotelDto) {
         Hotel hotel = hotelRepository.findById(id)
                 .orElseThrow(() -> new ServiceException(HotelExceptionCode.HOTEL_NOT_FOUNT_BY_ID.getMessage() + id));
         hotel.setAmenities(new HashSet<>());
@@ -93,7 +94,8 @@ public class HotelServiceImpl implements HotelService {
         }
 
         hotelMapper.updateEntityFromDto(updateHotelDto, hotel);
-        hotelRepository.save(hotel);
+        Hotel updatedHotel = hotelRepository.save(hotel);
+        return hotelMapper.toDto(updatedHotel);
     }
 
     public void deleteHotelById(UUID id) {

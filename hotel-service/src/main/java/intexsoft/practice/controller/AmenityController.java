@@ -36,15 +36,15 @@ public class AmenityController {
     }
 
     @PostMapping
-    public ResponseEntity<String> addAmenity(@Valid @RequestBody AddAmenityDto addAmenityDto) {
-        amenityService.addAmenity(addAmenityDto);
-        return ResponseEntity.ok("Amenity added successfully");
+    public ResponseEntity<ResponseAmenityDto> addAmenity(@Valid @RequestBody AddAmenityDto addAmenityDto) {
+        ResponseAmenityDto responseAmenityDto = amenityService.addAmenity(addAmenityDto);
+        return ResponseEntity.ok(responseAmenityDto);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<String> updateAmenity(@PathVariable UUID id, @Valid @RequestBody UpdateAmenityDto updateAmenityDto) {
-        amenityService.updateAmenity(id, updateAmenityDto);
-        return ResponseEntity.ok("Amenity updated successfully");
+    public ResponseEntity<ResponseAmenityDto> updateAmenity(@PathVariable UUID id, @Valid @RequestBody UpdateAmenityDto updateAmenityDto) {
+        ResponseAmenityDto responseAmenityDto = amenityService.updateAmenity(id, updateAmenityDto);
+        return ResponseEntity.ok(responseAmenityDto);
     }
 
     @DeleteMapping("/{id}")

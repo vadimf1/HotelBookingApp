@@ -1,4 +1,4 @@
-package intexsoft.practice.util.exceptionCode;
+package intexsoft.practice.exception.code;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

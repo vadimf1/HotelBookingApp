@@ -7,7 +7,7 @@ import intexsoft.practice.mapper.HotelStatusMapper;
 import intexsoft.practice.model.HotelStatus;
 import intexsoft.practice.repository.HotelStatusRepository;
 import intexsoft.practice.service.HotelStatusService;
-import intexsoft.practice.util.exceptionCode.HotelStatusExceptionCode;
+import intexsoft.practice.exception.code.HotelStatusExceptionCode;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,11 +22,12 @@ public class HotelStatusServiceImpl implements HotelStatusService {
     private final HotelStatusRepository hotelStatusRepository;
     private final HotelStatusMapper hotelStatusMapper;
 
-    public void addHotelStatus(DictionaryDto hotelStatusDto) {
+    public DictionaryDto addHotelStatus(DictionaryDto hotelStatusDto) {
         if (hotelStatusDto.getId() != null) {
             throw new ServiceException(HotelStatusExceptionCode.ID_FIELD_EXPECTED_NULL.getMessage());
         }
-        hotelStatusRepository.save(hotelStatusMapper.toEntity(hotelStatusDto));
+        HotelStatus savedHotelStatus = hotelStatusRepository.save(hotelStatusMapper.toEntity(hotelStatusDto));
+        return hotelStatusMapper.toDto(savedHotelStatus);
     }
 
     public List<DictionaryDto> getAllHotelStatuses() {
@@ -42,12 +43,13 @@ public class HotelStatusServiceImpl implements HotelStatusService {
                 .orElseThrow(() -> new ServiceException(HotelStatusExceptionCode.HOTEL_STATUS_NOT_FOUNT_BY_ID.getMessage() + id));
     }
 
-    public void updateHotelStatus(UUID id, UpdateDictionaryDto updateHotelStatusDto) {
+    public DictionaryDto updateHotelStatus(UUID id, UpdateDictionaryDto updateHotelStatusDto) {
         HotelStatus hotelStatus = hotelStatusRepository.findById(id)
                 .orElseThrow(() -> new ServiceException(HotelStatusExceptionCode.HOTEL_STATUS_NOT_FOUNT_BY_ID.getMessage() + id));
 
         hotelStatusMapper.updateEntityFromDto(updateHotelStatusDto, hotelStatus);
-        hotelStatusRepository.save(hotelStatus);
+        HotelStatus updatedHotelStatus = hotelStatusRepository.save(hotelStatus);
+        return hotelStatusMapper.toDto(updatedHotelStatus);
     }
 
     public void deleteHotelStatusById(UUID id) {

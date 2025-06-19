@@ -36,15 +36,15 @@ public class ReviewController {
     }
 
     @PostMapping
-    public ResponseEntity<String> addReview(@Valid @RequestBody AddReviewDto addReviewDto) {
-        reviewService.addReview(addReviewDto);
-        return ResponseEntity.ok("Review added successfully");
+    public ResponseEntity<ResponseReviewDto> addReview(@Valid @RequestBody AddReviewDto addReviewDto) {
+        ResponseReviewDto responseReviewDto = reviewService.addReview(addReviewDto);
+        return ResponseEntity.ok(responseReviewDto);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<String> updateReview(@PathVariable UUID id, @Valid @RequestBody UpdateReviewDto updateReviewDto) {
-        reviewService.updateReview(id, updateReviewDto);
-        return ResponseEntity.ok("Review updated successfully");
+    public ResponseEntity<ResponseReviewDto> updateReview(@PathVariable UUID id, @Valid @RequestBody UpdateReviewDto updateReviewDto) {
+        ResponseReviewDto responseReviewDto = reviewService.updateReview(id, updateReviewDto);
+        return ResponseEntity.ok(responseReviewDto);
     }
 
     @DeleteMapping("/{id}")

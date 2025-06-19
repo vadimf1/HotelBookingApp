@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.UUID;
 
 public interface HotelStatusService {
-    void addHotelStatus(DictionaryDto dictionaryDto);
+    DictionaryDto addHotelStatus(DictionaryDto dictionaryDto);
     List<DictionaryDto> getAllHotelStatuses();
     DictionaryDto getHotelStatusById(UUID id);
-    void updateHotelStatus(UUID id, UpdateDictionaryDto updateDictionaryDto);
+    DictionaryDto updateHotelStatus(UUID id, UpdateDictionaryDto updateDictionaryDto);
     void deleteHotelStatusById(UUID id);
 }

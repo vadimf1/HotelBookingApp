@@ -12,11 +12,11 @@ import intexsoft.practice.repository.RoomRepository;
 import intexsoft.practice.repository.RoomStatusRepository;
 import intexsoft.practice.repository.RoomTypeRepository;
 import intexsoft.practice.service.RoomService;
-import intexsoft.practice.util.exceptionCode.AmenityExceptionCode;
-import intexsoft.practice.util.exceptionCode.HotelExceptionCode;
-import intexsoft.practice.util.exceptionCode.RoomExceptionCode;
-import intexsoft.practice.util.exceptionCode.RoomStatusExceptionCode;
-import intexsoft.practice.util.exceptionCode.RoomTypeExceptionCode;
+import intexsoft.practice.exception.code.AmenityExceptionCode;
+import intexsoft.practice.exception.code.HotelExceptionCode;
+import intexsoft.practice.exception.code.RoomExceptionCode;
+import intexsoft.practice.exception.code.RoomStatusExceptionCode;
+import intexsoft.practice.exception.code.RoomTypeExceptionCode;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -36,7 +36,7 @@ public class RoomServiceImpl implements RoomService {
     private final RoomMapper roomMapper;
     private final AmenityRepository amenityRepository;
 
-    public void addRoom(AddRoomDto addRoomDto) {
+    public ResponseRoomDto addRoom(AddRoomDto addRoomDto) {
         Room room = roomMapper.toEntity(addRoomDto);
         room.setHotel(
                 hotelRepository.findById(addRoomDto.getHotelId())
@@ -57,7 +57,8 @@ public class RoomServiceImpl implements RoomService {
                         .orElseThrow(() -> new ServiceException(AmenityExceptionCode.AMENITY_NOT_FOUNT_BY_ID.getMessage() + amenityId))
             );
         }
-        roomRepository.save(room);
+        Room savedRoom = roomRepository.save(room);
+        return roomMapper.toDto(savedRoom);
     }
 
     public List<ResponseRoomDto> getAllRooms() {
@@ -73,7 +74,7 @@ public class RoomServiceImpl implements RoomService {
                 .orElseThrow(() -> new ServiceException(RoomExceptionCode.ROOM_NOT_FOUNT_BY_ID.getMessage() + id));
     }
 
-    public void updateRoom(UUID id, UpdateRoomDto updateRoomDto) {
+    public ResponseRoomDto updateRoom(UUID id, UpdateRoomDto updateRoomDto) {
         Room room = roomRepository.findById(id)
                 .orElseThrow(() -> new ServiceException(RoomExceptionCode.ROOM_NOT_FOUNT_BY_ID.getMessage() + id));
         room.setAmenities(new HashSet<>());
@@ -103,7 +104,8 @@ public class RoomServiceImpl implements RoomService {
             );
         }
         roomMapper.updateEntityFromDto(updateRoomDto, room);
-        roomRepository.save(room);
+        Room updatedRoom = roomRepository.save(room);
+        return roomMapper.toDto(updatedRoom);
     }
 
     public void deleteRoomById(UUID id) {

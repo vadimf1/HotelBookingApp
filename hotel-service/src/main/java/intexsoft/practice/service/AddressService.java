@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.UUID;
 
 public interface AddressService {
-    void addAddress(AddressDto addressDto);
+    AddressDto addAddress(AddressDto addressDto);
     List<AddressDto> getAllAddresses();
     AddressDto getAddressById(UUID id);
-    void updateAddress(UUID id, UpdateAddressDto updateAddressDto);
+    AddressDto updateAddress(UUID id, UpdateAddressDto updateAddressDto);
     void deleteAddressById(UUID id);
 }

@@ -1,13 +1,13 @@
-package intexsoft.practice.util.exceptionCode;
+package intexsoft.practice.exception.code;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
-public enum RoomStatusExceptionCode {
+public enum AddressExceptionCode {
     ID_FIELD_EXPECTED_NULL("ID field expected null"),
-    ROOM_STATUS_NOT_FOUNT_BY_ID("Room status not found with ID: ");
+    ADDRESS_NOT_FOUNT_BY_ID("Address not found with ID: ");
 
     private final String message;
 }

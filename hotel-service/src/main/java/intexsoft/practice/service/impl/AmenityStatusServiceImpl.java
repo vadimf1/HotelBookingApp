@@ -7,8 +7,7 @@ import intexsoft.practice.mapper.AmenityStatusMapper;
 import intexsoft.practice.model.AmenityStatus;
 import intexsoft.practice.repository.AmenityStatusRepository;
 import intexsoft.practice.service.AmenityStatusService;
-import intexsoft.practice.service.AmenityStatusService;
-import intexsoft.practice.util.exceptionCode.AmenityStatusExceptionCode;
+import intexsoft.practice.exception.code.AmenityStatusExceptionCode;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,11 +22,12 @@ public class AmenityStatusServiceImpl implements AmenityStatusService {
     private final AmenityStatusRepository amenityStatusRepository;
     private final AmenityStatusMapper amenityStatusMapper;
 
-    public void addAmenityStatus(DictionaryDto amenityStatusDto) {
+    public DictionaryDto addAmenityStatus(DictionaryDto amenityStatusDto) {
         if (amenityStatusDto.getId() != null) {
             throw new ServiceException(AmenityStatusExceptionCode.ID_FIELD_EXPECTED_NULL.getMessage());
         }
-        amenityStatusRepository.save(amenityStatusMapper.toEntity(amenityStatusDto));
+        AmenityStatus savedAmenityStatus = amenityStatusRepository.save(amenityStatusMapper.toEntity(amenityStatusDto));
+        return amenityStatusMapper.toDto(savedAmenityStatus);
     }
 
     public List<DictionaryDto> getAllAmenityStatuses() {
@@ -43,12 +43,13 @@ public class AmenityStatusServiceImpl implements AmenityStatusService {
                 .orElseThrow(() -> new ServiceException(AmenityStatusExceptionCode.AMENITY_STATUS_NOT_FOUNT_BY_ID.getMessage() + id));
     }
 
-    public void updateAmenityStatus(UUID id, UpdateDictionaryDto updateAmenityStatusDto) {
+    public DictionaryDto updateAmenityStatus(UUID id, UpdateDictionaryDto updateAmenityStatusDto) {
         AmenityStatus amenityStatus = amenityStatusRepository.findById(id)
                 .orElseThrow(() -> new ServiceException(AmenityStatusExceptionCode.AMENITY_STATUS_NOT_FOUNT_BY_ID.getMessage() + id));
 
         amenityStatusMapper.updateEntityFromDto(updateAmenityStatusDto, amenityStatus);
-        amenityStatusRepository.save(amenityStatus);
+        AmenityStatus updatedAmenityStatus = amenityStatusRepository.save(amenityStatus);
+        return amenityStatusMapper.toDto(updatedAmenityStatus);
     }
 
     public void deleteAmenityStatusById(UUID id) {

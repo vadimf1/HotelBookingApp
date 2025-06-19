@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.UUID;
 
 public interface RoomTypeService {
-    void addRoomType(RoomTypeDto roomTypeDto);
+    RoomTypeDto addRoomType(RoomTypeDto roomTypeDto);
     List<RoomTypeDto> getAllRoomTypes();
     RoomTypeDto getRoomTypeById(UUID id);
-    void updateRoomType(UUID id, UpdateRoomTypeDto updateRoomTypeDto);
+    RoomTypeDto updateRoomType(UUID id, UpdateRoomTypeDto updateRoomTypeDto);
     void deleteRoomTypeById(UUID id);
 }

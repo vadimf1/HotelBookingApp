@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.UUID;
 
 public interface RoomService {
-    void addRoom(AddRoomDto addRoomDto);
+    ResponseRoomDto addRoom(AddRoomDto addRoomDto);
     List<ResponseRoomDto> getAllRooms();
     ResponseRoomDto getRoomById(UUID id);
-    void updateRoom(UUID id, UpdateRoomDto updateRoomDto);
+    ResponseRoomDto updateRoom(UUID id, UpdateRoomDto updateRoomDto);
     void deleteRoomById(UUID id);
 }

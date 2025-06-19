@@ -35,15 +35,15 @@ public class AddressController {
     }
 
     @PostMapping
-    public ResponseEntity<String> addAddress(@Valid @RequestBody AddressDto addressDto) {
-        addressService.addAddress(addressDto);
-        return ResponseEntity.ok("Address added successfully");
+    public ResponseEntity<AddressDto> addAddress(@Valid @RequestBody AddressDto addressDto) {
+        AddressDto responseAddressDto = addressService.addAddress(addressDto);
+        return ResponseEntity.ok(responseAddressDto);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<String> updateAddress(@PathVariable UUID id, @Valid @RequestBody UpdateAddressDto updateAddressDto) {
-        addressService.updateAddress(id, updateAddressDto);
-        return ResponseEntity.ok("Address updated successfully");
+    public ResponseEntity<AddressDto> updateAddress(@PathVariable UUID id, @Valid @RequestBody UpdateAddressDto updateAddressDto) {
+        AddressDto responseAddressDto = addressService.updateAddress(id, updateAddressDto);
+        return ResponseEntity.ok(responseAddressDto);
     }
 
     @DeleteMapping("/{id}")

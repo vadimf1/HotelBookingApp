@@ -36,15 +36,15 @@ public class HotelController {
     }
 
     @PostMapping
-    public ResponseEntity<String> addHotel(@Valid @RequestBody AddHotelDto addHotelDto) {
-        hotelService.addHotel(addHotelDto);
-        return ResponseEntity.ok("Hotel added successfully");
+    public ResponseEntity<ResponseHotelDto> addHotel(@Valid @RequestBody AddHotelDto addHotelDto) {
+        ResponseHotelDto responseHotelDto = hotelService.addHotel(addHotelDto);
+        return ResponseEntity.ok(responseHotelDto);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<String> updateHotel(@PathVariable UUID id, @Valid @RequestBody UpdateHotelDto updateHotelDto) {
-        hotelService.updateHotel(id, updateHotelDto);
-        return ResponseEntity.ok("Hotel updated successfully");
+    public ResponseEntity<ResponseHotelDto> updateHotel(@PathVariable UUID id, @Valid @RequestBody UpdateHotelDto updateHotelDto) {
+        ResponseHotelDto responseHotelDto = hotelService.updateHotel(id, updateHotelDto);
+        return ResponseEntity.ok(responseHotelDto);
     }
 
     @DeleteMapping("/{id}")

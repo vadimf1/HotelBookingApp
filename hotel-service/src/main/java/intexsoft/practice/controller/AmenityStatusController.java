@@ -35,15 +35,15 @@ public class AmenityStatusController {
     }
 
     @PostMapping
-    public ResponseEntity<String> addAmenityStatus(@Valid @RequestBody DictionaryDto amenityStatusDto) {
-        amenityStatusService.addAmenityStatus(amenityStatusDto);
-        return ResponseEntity.ok("AmenityStatus added successfully");
+    public ResponseEntity<DictionaryDto> addAmenityStatus(@Valid @RequestBody DictionaryDto amenityStatusDto) {
+        DictionaryDto responseDictionaryDto = amenityStatusService.addAmenityStatus(amenityStatusDto);
+        return ResponseEntity.ok(responseDictionaryDto);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<String> updateAmenityStatus(@PathVariable UUID id, @Valid @RequestBody UpdateDictionaryDto updateAmenityStatusDto) {
-        amenityStatusService.updateAmenityStatus(id, updateAmenityStatusDto);
-        return ResponseEntity.ok("AmenityStatus updated successfully");
+    public ResponseEntity<DictionaryDto> updateAmenityStatus(@PathVariable UUID id, @Valid @RequestBody UpdateDictionaryDto updateAmenityStatusDto) {
+        DictionaryDto responseDictionaryDto = amenityStatusService.updateAmenityStatus(id, updateAmenityStatusDto);
+        return ResponseEntity.ok(responseDictionaryDto);
     }
 
     @DeleteMapping("/{id}")

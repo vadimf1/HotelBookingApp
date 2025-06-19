@@ -35,15 +35,15 @@ public class RoomStatusController {
     }
 
     @PostMapping
-    public ResponseEntity<String> addRoomStatus(@Valid @RequestBody DictionaryDto roomStatusDto) {
-        roomStatusService.addRoomStatus(roomStatusDto);
-        return ResponseEntity.ok("RoomStatus added successfully");
+    public ResponseEntity<DictionaryDto> addRoomStatus(@Valid @RequestBody DictionaryDto roomStatusDto) {
+        DictionaryDto responseDictionaryDto = roomStatusService.addRoomStatus(roomStatusDto);
+        return ResponseEntity.ok(responseDictionaryDto);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<String> updateRoomStatus(@PathVariable UUID id, @Valid @RequestBody UpdateDictionaryDto updateRoomStatusDto) {
-        roomStatusService.updateRoomStatus(id, updateRoomStatusDto);
-        return ResponseEntity.ok("RoomStatus updated successfully");
+    public ResponseEntity<DictionaryDto> updateRoomStatus(@PathVariable UUID id, @Valid @RequestBody UpdateDictionaryDto updateRoomStatusDto) {
+        DictionaryDto responseDictionaryDto = roomStatusService.updateRoomStatus(id, updateRoomStatusDto);
+        return ResponseEntity.ok(responseDictionaryDto);
     }
 
     @DeleteMapping("/{id}")

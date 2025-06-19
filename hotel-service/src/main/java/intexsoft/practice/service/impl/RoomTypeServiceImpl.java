@@ -7,7 +7,7 @@ import intexsoft.practice.mapper.RoomTypeMapper;
 import intexsoft.practice.model.RoomType;
 import intexsoft.practice.repository.RoomTypeRepository;
 import intexsoft.practice.service.RoomTypeService;
-import intexsoft.practice.util.exceptionCode.RoomTypeExceptionCode;
+import intexsoft.practice.exception.code.RoomTypeExceptionCode;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,11 +22,12 @@ public class RoomTypeServiceImpl implements RoomTypeService {
     private final RoomTypeRepository roomTypeRepository;
     private final RoomTypeMapper roomTypeMapper;
 
-    public void addRoomType(RoomTypeDto roomTypeDto) {
+    public RoomTypeDto addRoomType(RoomTypeDto roomTypeDto) {
         if (roomTypeDto.getId() != null) {
             throw new ServiceException(RoomTypeExceptionCode.ID_FIELD_EXPECTED_NULL.getMessage());
         }
-        roomTypeRepository.save(roomTypeMapper.toEntity(roomTypeDto));
+        RoomType savedRoomType = roomTypeRepository.save(roomTypeMapper.toEntity(roomTypeDto));
+        return roomTypeMapper.toDto(savedRoomType);
     }
 
     public List<RoomTypeDto> getAllRoomTypes() {
@@ -42,12 +43,13 @@ public class RoomTypeServiceImpl implements RoomTypeService {
                 .orElseThrow(() -> new ServiceException(RoomTypeExceptionCode.ROOM_TYPE_NOT_FOUNT_BY_ID.getMessage() + id));
     }
 
-    public void updateRoomType(UUID id, UpdateRoomTypeDto updateRoomTypeDto) {
+    public RoomTypeDto updateRoomType(UUID id, UpdateRoomTypeDto updateRoomTypeDto) {
         RoomType roomType = roomTypeRepository.findById(id)
                 .orElseThrow(() -> new ServiceException(RoomTypeExceptionCode.ROOM_TYPE_NOT_FOUNT_BY_ID.getMessage() + id));
 
         roomTypeMapper.updateEntityFromDto(updateRoomTypeDto, roomType);
-        roomTypeRepository.save(roomType);
+        RoomType updatedRoomType = roomTypeRepository.save(roomType);
+        return roomTypeMapper.toDto(updatedRoomType);
     }
 
     public void deleteRoomTypeById(UUID id) {
