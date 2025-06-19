@@ -3,7 +3,7 @@ name: Build and Push Notification Docker Image
 on:
   push:
     branches:
-      - main
+      - dev
     paths:
       - 'notification-service/**'
       - 'notification-kafka-dto-lib/**'
