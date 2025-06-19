@@ -9,10 +9,6 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring")
 public interface RoomBookingMapper {
 
-    @Mapping(source = "requestDTO.userId", target = "userId")
-    @Mapping(source = "requestDTO.roomId", target = "roomId")
-    @Mapping(source = "requestDTO.checkInDate", target = "checkInDate")
-    @Mapping(source = "requestDTO.checkOutDate", target = "checkOutDate")
     RoomBooking partialToEntity(BookingRequestDTO requestDTO);
 
     default RoomBooking toEntity(BookingRequestDTO requestDTO, BookingStatusEntity bookingStatus) {
@@ -21,13 +17,6 @@ public interface RoomBookingMapper {
         return roomBooking;
     }
 
-    @Mapping(source = "roomBooking.bookingId", target = "bookingId")
-    @Mapping(source = "roomBooking.userId", target = "userId")
-    @Mapping(source = "roomBooking.roomId", target = "roomId")
-    @Mapping(source = "roomBooking.checkInDate", target = "checkInDate")
-    @Mapping(source = "roomBooking.checkOutDate", target = "checkOutDate")
     @Mapping(source = "roomBooking.bookingStatus.code", target = "bookingStatus")
-    @Mapping(source = "roomBooking.createdAt", target = "createdAt")
-    @Mapping(source = "roomBooking.updatedAt", target = "updatedAt")
     BookingResponseDTO toDTO(RoomBooking roomBooking);
 }
