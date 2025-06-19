@@ -7,4 +7,5 @@
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
     <include file="db/changelog/changes/001_create_login_notifications_table.xml"/>
+    <include file="db/changelog/changes/002_create_locale_mappings_table.xml"/>
 </databaseChangeLog>

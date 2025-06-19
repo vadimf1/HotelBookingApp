@@ -11,8 +11,8 @@
 
     <modules>
         <module>notification-service</module>
-        <module>kafka-producer-lib</module>
-        <module>kafka-dto-lib</module>
+        <module>notification-kafka-producer-lib</module>
+        <module>notification-kafka-dto-lib</module>
         <module>booking-service</module>
         <module>booking-service-kafka-producer</module>
         <module>booking-service-kafka-dto</module>

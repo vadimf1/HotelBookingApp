@@ -43,4 +43,4 @@ jobs:
           done
 
       - name: Build and test
-        run: mvn clean verify
+        run: ./gradlew clean build
