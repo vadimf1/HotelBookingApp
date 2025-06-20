@@ -32,13 +32,13 @@ public class BookingNotificationServiceImpl implements NotificationService<Booki
 
     @Override
     public void notify(BookingCreatedNotification dto) {
+        //Вот это всё для того, чтобы данные забирать с контроллеров у микросервисов
         //UserDto userDto = userClientService.getUserById(dto.userId());
         //RoomDto roomDto = roomClientService.getRoomById(dto.roomId());
         //String email = userDto.getEmail();
 
         String email = "default@gmail.com";
         RoomDto roomDto = RoomDtoTestFactory.createStubRoomDto();
-
 
         Map<String, Object> model = buildModel(dto, roomDto);
         Locale locale = localeMappingService.getLocaleForCountry(
