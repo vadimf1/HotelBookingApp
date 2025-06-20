@@ -7,13 +7,6 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring")
 public interface KafkaEventMapper {
 
-    @Mapping(source = "roomBooking.bookingId", target = "bookingId")
-    @Mapping(source = "roomBooking.userId", target = "userId")
-    @Mapping(source = "roomBooking.roomId", target = "roomId")
-    @Mapping(source = "roomBooking.checkInDate", target = "checkInDate")
-    @Mapping(source = "roomBooking.checkOutDate", target = "checkOutDate")
-    KafkaBookingEventDTO toKafkaEventDTO(RoomBooking roomBooking);
-
     @Mapping(target = "eventType", constant = "BOOKING_CREATED")
     KafkaBookingEventDTO toKafkaEventDTOWithCreatedType(RoomBooking roomBooking);
 

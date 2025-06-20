@@ -2,11 +2,14 @@ package intexsoft.practice.booking_service.controller;
 
 import intexsoft.practice.booking_service.dto.BookingRequestDTO;
 import intexsoft.practice.booking_service.dto.BookingResponseDTO;
+import intexsoft.practice.booking_service.dto.RoomAvailabilityDTO;
+import intexsoft.practice.booking_service.listener.cache.KafkaResponseCache;
 import intexsoft.practice.booking_service.service.BookingService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.UUID;
 
 @RestController
@@ -14,10 +17,12 @@ import java.util.UUID;
 public class BookingController {
 
     private final BookingService bookingService;
+    private final KafkaResponseCache kafkaResponseCache;
 
     @Autowired
-    public BookingController(BookingService bookingService) {
+    public BookingController(BookingService bookingService,  KafkaResponseCache kafkaResponseCache) {
         this.bookingService = bookingService;
+        this.kafkaResponseCache = kafkaResponseCache;
     }
 
     @PostMapping
@@ -28,5 +33,15 @@ public class BookingController {
     @PutMapping("cancel/{bookingId}")
     public BookingResponseDTO cancelBooking(@PathVariable UUID bookingId) {
         return bookingService.cancelBooking(bookingId);
+    }
+
+    @GetMapping("/booked-periods")
+    public RoomAvailabilityDTO getBookedPeriods(@RequestParam UUID roomId) {
+        return bookingService.getBookedPeriods(roomId);
+    }
+
+    @GetMapping("/kafka-result/{roomId}")
+    public RoomAvailabilityDTO getKafkaResult(@PathVariable UUID roomId) {
+        return kafkaResponseCache.getCache().getOrDefault(roomId, new RoomAvailabilityDTO(Collections.emptyList()));
     }
 }

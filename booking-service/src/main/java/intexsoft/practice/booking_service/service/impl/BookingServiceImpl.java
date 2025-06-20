@@ -1,7 +1,9 @@
 package intexsoft.practice.booking_service.service.impl;
 
+import intexsoft.practice.booking_service.dto.BookedPeriodDTO;
 import intexsoft.practice.booking_service.dto.BookingRequestDTO;
 import intexsoft.practice.booking_service.dto.BookingResponseDTO;
+import intexsoft.practice.booking_service.dto.RoomAvailabilityDTO;
 import intexsoft.practice.booking_service.exception.InvalidBookingRequestException;
 import intexsoft.practice.booking_service.mapper.KafkaEventMapper;
 import intexsoft.practice.booking_service.mapper.RoomBookingMapper;
@@ -21,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -71,6 +74,16 @@ public class BookingServiceImpl implements BookingService {
         kafkaProducerService.sendBookingEvent(eventDTO);
 
         return roomBookingMapper.toDTO(roomBooking);
+    }
+
+    @Override
+    @Transactional
+    public RoomAvailabilityDTO getBookedPeriods(UUID roomId) {
+        List<BookedPeriodDTO> bookedPeriods = bookingRepository.findBookedPeriodsByRoomId(roomId);
+
+        log.warn(bookedPeriods.toString());
+
+        return new RoomAvailabilityDTO(bookedPeriods);
     }
 
     private void validateDates(BookingRequestDTO requestDTO) {
