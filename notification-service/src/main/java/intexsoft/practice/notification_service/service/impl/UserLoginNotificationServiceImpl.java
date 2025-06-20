@@ -23,7 +23,7 @@ public class UserLoginNotificationServiceImpl implements NotificationService<Acc
     private final MailSenderService mailSenderService;
     private final FreeMarkerMailContentBuilder contentBuilder;
     private final IpInfoService ipInfoService;
-    private final LoginNotificationService loginNotificationService;
+    private final LoginNotificationDataService loginNotificationDataService;
     private final LoginNotificationMapper loginNotificationMapper;
     private final LocalizedMessageService localizedMessageService;
     private final LocaleMappingService localeMappingService;
@@ -54,7 +54,7 @@ public class UserLoginNotificationServiceImpl implements NotificationService<Acc
         LoginNotification loginNotification = loginNotificationMapper.toEntity(dto);
         loginNotification.setCountry(ipInfoResponse.getCountry());
         loginNotification.setCity(ipInfoResponse.getCity());
-        loginNotificationService.saveLoginNotification(loginNotification);
+        loginNotificationDataService.saveLoginNotification(loginNotification);
 
         mailSenderService.sendEmail(email, subject, body);
         log.info("Уведомление отправлено на почту {}", email);

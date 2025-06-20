@@ -2,7 +2,7 @@ package intexsoft.practice.notification_service.localization;
 
 import java.util.List;
 
-public class NotificationLoginMessageKeys {
+public final class NotificationLoginMessageKeys {
     public static final String SUBJECT = "subject";
     public static final String LOGIN_TITLE = "login.title";
     public static final String LOGIN_BODY = "login.body";
@@ -24,4 +24,7 @@ public class NotificationLoginMessageKeys {
             TIME_LABEL,
             UNKNOWN
     );
+
+    public NotificationLoginMessageKeys() {
+    }
 }
