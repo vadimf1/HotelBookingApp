@@ -1,0 +1,25 @@
+plugins {
+    id 'base'
+}
+
+subprojects {
+    group = 'intexsoft.practice'
+    version = '1.0.0'
+
+    repositories {
+        mavenCentral()
+    }
+}
+
+tasks.register('buildParentPom', Exec) {
+    group = 'build'
+    description = 'Build and install root Maven pom (hotel-booking-app)'
+    workingDir = projectDir
+    commandLine 'mvn', 'clean', 'install'
+}
+
+tasks.register('buildAll') {
+    group = 'build'
+    description = 'Build all projects (root pom + hotel-service)'
+    dependsOn buildParentPom, ':hotel-service:build'
+}
