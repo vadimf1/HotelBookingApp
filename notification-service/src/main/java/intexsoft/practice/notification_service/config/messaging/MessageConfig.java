@@ -1,4 +1,4 @@
-package intexsoft.practice.notification_service.config;
+package intexsoft.practice.notification_service.config.messaging;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;

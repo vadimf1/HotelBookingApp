@@ -1,6 +1,6 @@
 package intexsoft.practice.notification_service.service.impl;
 
-import intexsoft.practice.notification_service.config.MailProperties;
+import intexsoft.practice.notification_service.config.mail.MailProperties;
 import intexsoft.practice.notification_service.service.MailSenderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;

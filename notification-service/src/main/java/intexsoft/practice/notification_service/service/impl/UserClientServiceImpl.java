@@ -1,6 +1,6 @@
 package intexsoft.practice.notification_service.service.impl;
 
-import intexsoft.practice.notification_service.config.UserClientProperties;
+import intexsoft.practice.notification_service.config.client.UserClientProperties;
 import intexsoft.practice.notification_service.dto.UserDto;
 import intexsoft.practice.notification_service.service.UserClientService;
 import lombok.RequiredArgsConstructor;

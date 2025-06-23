@@ -1,7 +1,8 @@
-package intexsoft.practice.notification_service.config;
+package intexsoft.practice.notification_service.config.kafka;
 
 import intexsoft.practice.dto.notification.AccountLoginNotification;
 import intexsoft.practice.dto.notification.BookingCreatedNotification;
+import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.context.annotation.Bean;
@@ -17,13 +18,17 @@ import java.util.Map;
 
 @Configuration
 @EnableKafka
+@RequiredArgsConstructor
 public class KafkaConfig {
+
+    private final LoginConsumerProperties loginConsumerProps;
+    private final BookingConsumerProperties bookingConsumerProps;
 
     @Bean
     public ConsumerFactory<String, AccountLoginNotification> accountLoginConsumerFactory() {
         Map<String, Object> props = new HashMap<>();
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, "notification-service");
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, loginConsumerProps.getBootstrapServers());
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, loginConsumerProps.getGroupId());
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
         props.put(JsonDeserializer.TRUSTED_PACKAGES, "intexsoft.practice.dto.notification");
@@ -44,8 +49,8 @@ public class KafkaConfig {
     @Bean
     public ConsumerFactory<String, BookingCreatedNotification> bookingConsumerFactory() {
         Map<String, Object> props = new HashMap<>();
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, "notification-service");
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bookingConsumerProps.getBootstrapServers());
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, bookingConsumerProps.getGroupId());
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
         props.put(JsonDeserializer.TRUSTED_PACKAGES, "intexsoft.practice.dto.notification");

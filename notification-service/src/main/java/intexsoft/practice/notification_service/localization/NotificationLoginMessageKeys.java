@@ -25,6 +25,6 @@ public final class NotificationLoginMessageKeys {
             UNKNOWN
     );
 
-    public NotificationLoginMessageKeys() {
+    private NotificationLoginMessageKeys() {
     }
 }

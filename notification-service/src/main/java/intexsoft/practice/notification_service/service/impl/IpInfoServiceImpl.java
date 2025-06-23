@@ -1,6 +1,6 @@
 package intexsoft.practice.notification_service.service.impl;
 
-import intexsoft.practice.notification_service.config.IpInfoProperties;
+import intexsoft.practice.notification_service.config.ipinfo.IpInfoProperties;
 import intexsoft.practice.notification_service.dto.IpInfoResponse;
 import intexsoft.practice.notification_service.exception.IpInfoRetrievalException;
 import intexsoft.practice.notification_service.service.IpInfoService;
