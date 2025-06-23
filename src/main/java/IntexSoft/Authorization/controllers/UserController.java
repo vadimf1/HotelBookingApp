@@ -2,7 +2,6 @@ package IntexSoft.Authorization.controllers;
 
 import IntexSoft.Authorization.kafka.KafkaProducer;
 import IntexSoft.Authorization.models.User;
-import IntexSoft.Authorization.repository.UserDAO;
 import IntexSoft.Authorization.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,11 +15,12 @@ import java.sql.SQLException;
 @RequestMapping("api/users")
 public class Auth {
 
-    private final UserService userService = new UserService();
+    private final UserService userService;
 
     @Autowired
     private final KafkaProducer kafkaProducer;
-    public Auth(KafkaProducer kafkaProducer){
+    public Auth(UserService userService, KafkaProducer kafkaProducer){
+        this.userService = userService;
         this.kafkaProducer = kafkaProducer;
     }
 
