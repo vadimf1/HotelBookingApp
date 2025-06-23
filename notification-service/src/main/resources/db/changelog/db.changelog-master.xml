@@ -8,4 +8,5 @@
 
     <include file="db/changelog/changes/001_create_login_notifications_table.xml"/>
     <include file="db/changelog/changes/002_create_locale_mappings_table.xml"/>
+    <include file="db/changelog/changes/003_create_booking_notifications_table.xml"/>
 </databaseChangeLog>

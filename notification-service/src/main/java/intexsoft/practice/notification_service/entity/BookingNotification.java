@@ -9,41 +9,34 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UuidGenerator;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.UUID;
 
-@Table(name = "login_notifications")
+@Table(name = "booking_notifications")
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class LoginNotification {
+public class BookingNotification {
 
     @Id
-    @UuidGenerator
     @Column(name = "id", nullable = false, updatable = false)
     private UUID id;
 
-    @Column(name = "ip", nullable = false)
-    private String ip;
-
-    @Column(name = "country")
-    private String country;
-
-    @Column(name = "city")
-    private String city;
-
-    @Column(name = "user_agent", nullable = false)
-    private String userAgent;
-
-    @Column(name = "user_id", nullable = false)
+    @Column(name = "user_id", nullable = false, updatable = false)
     private UUID userId;
 
-    @Column(name = "logged_at", nullable = false)
-    private Instant loggedAt;
+    @Column(name = "room_id", nullable = false, updatable = false)
+    private UUID roomId;
+
+    @Column(name = "check_in_date", nullable = false, updatable = false)
+    private LocalDate checkInDate;
+
+    @Column(name = "check_out_date", nullable = false, updatable = false)
+    private LocalDate checkOutDate;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     @CreationTimestamp
