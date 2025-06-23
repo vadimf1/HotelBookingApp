@@ -1,7 +1,8 @@
 package IntexSoft.Authorization.services;
 
 import IntexSoft.Authorization.models.User;
-import IntexSoft.Authorization.repository.UserDAO;
+import IntexSoft.Authorization.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -9,7 +10,11 @@ import java.sql.SQLException;
 @Service
 public class UserService {
 
-    private final UserDAO userDAO = new UserDAO();
+    private final UserRepository userRepository;
+
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     public String login(User user) throws SQLException {
         return checkLogin(user);
@@ -19,7 +24,7 @@ public class UserService {
         if(user.getEmail() == null || user.getPassword() == null) {
             return "Вы не ввели почту или пароль";
         }
-        if(!userDAO.findUser(user.getEmail(), user.getPassword())){
+        if(!userRepository.existsByEmailAndPassword(user.getEmail(), user.getPassword())){
             return "Проверьте корректность введённых даннных";
         }
         return "Авторизация прошла успешно";
@@ -30,11 +35,9 @@ public class UserService {
     }
 
     private String checkSignup(User user) throws Exception {
-        if(userDAO.findUser(user.getEmail(), user.getPassword())){
+        if(userRepository.existsByEmail(user.getEmail())){
             return "Пользователь с такой почтой уже существует";
         }
-
-        //Сделать валидацию на почту
 
         if(user.getEmail() == null || user.getPassword() == null) {
             return "Вы не ввели почту или пароль" + user.getEmail() + " " + user.getPassword();
@@ -47,10 +50,23 @@ public class UserService {
         {
             return "Введите имя и фамилию";
         }
-//        UserDAO userDAO = new UserDAO();
-//        userDAO.createUser(user);
+        createUser(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword());
         return "Регистрация прошла успешно!";
     }
+
+    @Transactional
+    public void createUser(String firstName, String lastName, String email, String password){
+        User user = new User();
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setEmail(email);
+        user.setPassword(password);
+
+        userRepository.save(user);
+    }
+
 }
+
+
 
 

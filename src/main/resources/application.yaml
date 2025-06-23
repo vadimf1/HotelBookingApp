@@ -1,1 +1,13 @@
-spring.application.name=Authorization
+spring:
+  application:
+    name: Authorization
+  datasource:
+    url: jdbc:postgresql://localhost:5432/Hotel
+    username: postgres
+    password: gfhjkm12
+  jpa:
+    hibernate:
+      ddl-auto: update
+      show-sql: true
+
+

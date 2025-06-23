@@ -13,13 +13,13 @@ import java.sql.SQLException;
 
 @RestController
 @RequestMapping("api/users")
-public class Auth {
+public class UserController {
 
     private final UserService userService;
 
     @Autowired
     private final KafkaProducer kafkaProducer;
-    public Auth(UserService userService, KafkaProducer kafkaProducer){
+    public UserController(UserService userService, KafkaProducer kafkaProducer){
         this.userService = userService;
         this.kafkaProducer = kafkaProducer;
     }
