@@ -2,11 +2,11 @@ package intexsoft.practice.notification_service.service.impl;
 
 import intexsoft.practice.dto.notification.BookingCreatedNotification;
 import intexsoft.practice.notification_service.dto.RoomDto;
+import intexsoft.practice.notification_service.dto.UserDto;
 import intexsoft.practice.notification_service.entity.BookingNotification;
 import intexsoft.practice.notification_service.localization.BookingNotificationMessageKeys;
 import intexsoft.practice.notification_service.mapper.BookingNotificationMapper;
 import intexsoft.practice.notification_service.service.*;
-import intexsoft.practice.notification_service.stub.RoomDtoTestFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -32,13 +32,9 @@ public class BookingNotificationServiceImpl implements NotificationService<Booki
 
     @Override
     public void notify(BookingCreatedNotification dto) {
-        //Вот это всё для того, чтобы данные забирать с контроллеров у микросервисов
-        //UserDto userDto = userClientService.getUserById(dto.userId());
-        //RoomDto roomDto = roomClientService.getRoomById(dto.roomId());
-        //String email = userDto.getEmail();
-
-        String email = "default@gmail.com";
-        RoomDto roomDto = RoomDtoTestFactory.createStubRoomDto();
+        UserDto userDto = userClientService.getUserById(dto.userId());
+        RoomDto roomDto = roomClientService.getRoomById(dto.roomId());
+        String email = userDto.getEmail();
 
         Map<String, Object> model = buildModel(dto, roomDto);
         Locale locale = localeMappingService.getLocaleForCountry(

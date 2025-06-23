@@ -5,29 +5,29 @@ import intexsoft.practice.notification_service.dto.RoomDto;
 public class RoomDtoTestFactory {
     public static RoomDto createStubRoomDto() {
         RoomDto room = new RoomDto();
-        room.setRoomNumber(101);
-        room.setPricePerDay(120.5);
-        room.setFloor(2);
-        room.setDescription("Stub description");
+        room.setRoomNumber(StubRoomConstants.ROOM_NUMBER);
+        room.setPricePerDay(StubRoomConstants.PRICE_PER_DAY);
+        room.setFloor(StubRoomConstants.FLOOR);
+        room.setDescription(StubRoomConstants.ROOM_DESCRIPTION);
 
         RoomDto.RoomTypeDto type = new RoomDto.RoomTypeDto();
-        type.setCode("STD");
-        type.setName("Standard");
+        type.setCode(StubRoomConstants.ROOM_TYPE_CODE);
+        type.setName(StubRoomConstants.ROOM_TYPE_NAME);
         room.setRoomType(type);
 
         RoomDto.HotelDto hotel = new RoomDto.HotelDto();
-        hotel.setName("Test Hotel");
-        hotel.setEmail("hotel@test.com");
-        hotel.setPhoneNumber("+123456789");
-        hotel.setWebsite("https://test.com");
+        hotel.setName(StubRoomConstants.HOTEL_NAME);
+        hotel.setEmail(StubRoomConstants.HOTEL_EMAIL);
+        hotel.setPhoneNumber(StubRoomConstants.HOTEL_PHONE);
+        hotel.setWebsite(StubRoomConstants.HOTEL_WEBSITE);
 
         RoomDto.AddressDto address = new RoomDto.AddressDto();
-        address.setCountry("Testland");
-        address.setState("Teststate");
-        address.setCity("Testcity");
-        address.setStreet("123 Test Street");
-        address.setPostalCode("00000");
-        address.setCountryCode("MX");
+        address.setCountry(StubRoomConstants.ADDRESS_COUNTRY);
+        address.setState(StubRoomConstants.ADDRESS_STATE);
+        address.setCity(StubRoomConstants.ADDRESS_CITY);
+        address.setStreet(StubRoomConstants.ADDRESS_STREET);
+        address.setPostalCode(StubRoomConstants.ADDRESS_POSTAL_CODE);
+        address.setCountryCode(StubRoomConstants.ADDRESS_COUNTRY_CODE);
 
         hotel.setAddress(address);
         room.setHotel(hotel);
