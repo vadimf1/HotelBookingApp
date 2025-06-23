@@ -1,6 +1,7 @@
 package intexsoft.practice.service.impl;
 
 import intexsoft.practice.dto.AddRoomDto;
+import intexsoft.practice.dto.KafkaResponseRoomDto;
 import intexsoft.practice.dto.ResponseRoomDto;
 import intexsoft.practice.dto.UpdateRoomDto;
 import intexsoft.practice.exception.ServiceException;
