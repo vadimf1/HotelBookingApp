@@ -1,4 +1,4 @@
-package intexsoft.practice.notification_service.service;
+package intexsoft.practice.notification_service.service.localization;
 
 import java.util.List;
 import java.util.Locale;

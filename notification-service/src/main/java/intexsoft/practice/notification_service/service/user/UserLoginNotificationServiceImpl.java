@@ -1,11 +1,16 @@
-package intexsoft.practice.notification_service.service.impl;
+package intexsoft.practice.notification_service.service.user;
 
 import intexsoft.practice.dto.notification.AccountLoginNotification;
 import intexsoft.practice.notification_service.dto.IpInfoResponse;
 import intexsoft.practice.notification_service.entity.LoginNotification;
 import intexsoft.practice.notification_service.localization.NotificationLoginMessageKeys;
 import intexsoft.practice.notification_service.mapper.LoginNotificationMapper;
-import intexsoft.practice.notification_service.service.*;
+import intexsoft.practice.notification_service.service.ip.IpInfoService;
+import intexsoft.practice.notification_service.service.localization.LocaleMappingService;
+import intexsoft.practice.notification_service.service.localization.LocalizedMessageService;
+import intexsoft.practice.notification_service.service.mail.FreeMarkerMailContentBuilder;
+import intexsoft.practice.notification_service.service.mail.MailSenderService;
+import intexsoft.practice.notification_service.service.notification.NotificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

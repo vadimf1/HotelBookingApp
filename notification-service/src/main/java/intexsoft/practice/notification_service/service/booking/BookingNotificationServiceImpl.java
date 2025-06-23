@@ -1,4 +1,4 @@
-package intexsoft.practice.notification_service.service.impl;
+package intexsoft.practice.notification_service.service.booking;
 
 import intexsoft.practice.dto.notification.BookingCreatedNotification;
 import intexsoft.practice.notification_service.dto.RoomDto;
@@ -6,7 +6,13 @@ import intexsoft.practice.notification_service.dto.UserDto;
 import intexsoft.practice.notification_service.entity.BookingNotification;
 import intexsoft.practice.notification_service.localization.BookingNotificationMessageKeys;
 import intexsoft.practice.notification_service.mapper.BookingNotificationMapper;
-import intexsoft.practice.notification_service.service.*;
+import intexsoft.practice.notification_service.service.localization.LocaleMappingService;
+import intexsoft.practice.notification_service.service.localization.LocalizedMessageService;
+import intexsoft.practice.notification_service.service.mail.FreeMarkerMailContentBuilder;
+import intexsoft.practice.notification_service.service.mail.MailSenderService;
+import intexsoft.practice.notification_service.service.client.RoomClientService;
+import intexsoft.practice.notification_service.service.client.UserClientService;
+import intexsoft.practice.notification_service.service.notification.NotificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package intexsoft.practice.notification_service.service;
+package intexsoft.practice.notification_service.service.ip;
 
 import intexsoft.practice.notification_service.dto.IpInfoResponse;
 

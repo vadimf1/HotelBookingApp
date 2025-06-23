@@ -1,9 +1,8 @@
-package intexsoft.practice.notification_service.service.impl;
+package intexsoft.practice.notification_service.service.mail;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
-import intexsoft.practice.notification_service.service.MailContentBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

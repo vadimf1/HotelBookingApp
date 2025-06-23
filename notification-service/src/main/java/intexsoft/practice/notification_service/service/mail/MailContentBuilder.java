@@ -1,4 +1,4 @@
-package intexsoft.practice.notification_service.service;
+package intexsoft.practice.notification_service.service.mail;
 
 import freemarker.template.TemplateException;
 

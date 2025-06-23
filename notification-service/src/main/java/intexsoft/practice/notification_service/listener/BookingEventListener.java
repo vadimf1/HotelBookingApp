@@ -1,7 +1,7 @@
 package intexsoft.practice.notification_service.listener;
 
 import intexsoft.practice.dto.notification.BookingCreatedNotification;
-import intexsoft.practice.notification_service.service.NotificationService;
+import intexsoft.practice.notification_service.service.notification.NotificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;

@@ -1,9 +1,8 @@
-package intexsoft.practice.notification_service.service.impl;
+package intexsoft.practice.notification_service.service.ip;
 
 import intexsoft.practice.notification_service.config.ipinfo.IpInfoProperties;
 import intexsoft.practice.notification_service.dto.IpInfoResponse;
 import intexsoft.practice.notification_service.exception.IpInfoRetrievalException;
-import intexsoft.practice.notification_service.service.IpInfoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

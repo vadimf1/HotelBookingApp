@@ -1,8 +1,7 @@
-package intexsoft.practice.notification_service.service.impl;
+package intexsoft.practice.notification_service.service.user;
 
 import intexsoft.practice.notification_service.entity.LoginNotification;
 import intexsoft.practice.notification_service.repository.LoginNotificationRepository;
-import intexsoft.practice.notification_service.service.LoginNotificationDataService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

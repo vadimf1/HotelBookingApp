@@ -1,4 +1,4 @@
-package intexsoft.practice.notification_service.service;
+package intexsoft.practice.notification_service.service.booking;
 
 import intexsoft.practice.notification_service.entity.BookingNotification;
 

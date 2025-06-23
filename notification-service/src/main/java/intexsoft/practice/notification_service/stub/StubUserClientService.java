@@ -1,7 +1,7 @@
 package intexsoft.practice.notification_service.stub;
 
 import intexsoft.practice.notification_service.dto.UserDto;
-import intexsoft.practice.notification_service.service.UserClientService;
+import intexsoft.practice.notification_service.service.client.UserClientService;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 

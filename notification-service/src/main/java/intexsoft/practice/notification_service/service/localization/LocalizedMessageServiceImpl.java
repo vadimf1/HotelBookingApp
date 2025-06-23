@@ -1,6 +1,5 @@
-package intexsoft.practice.notification_service.service.impl;
+package intexsoft.practice.notification_service.service.localization;
 
-import intexsoft.practice.notification_service.service.LocalizedMessageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;

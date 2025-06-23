@@ -1,8 +1,7 @@
-package intexsoft.practice.notification_service.service.impl;
+package intexsoft.practice.notification_service.service.localization;
 
 import intexsoft.practice.notification_service.entity.LocaleMapping;
 import intexsoft.practice.notification_service.repository.LocalMappingRepository;
-import intexsoft.practice.notification_service.service.LocaleMappingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

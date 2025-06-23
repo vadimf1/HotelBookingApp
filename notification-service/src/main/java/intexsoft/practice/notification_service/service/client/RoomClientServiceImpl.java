@@ -1,11 +1,9 @@
-package intexsoft.practice.notification_service.service.impl;
+package intexsoft.practice.notification_service.service.client;
 
 import intexsoft.practice.notification_service.config.client.UserClientProperties;
 import intexsoft.practice.notification_service.dto.RoomDto;
 import intexsoft.practice.notification_service.exception.roomClient.RoomNetworkException;
 import intexsoft.practice.notification_service.exception.roomClient.RoomServerException;
-import intexsoft.practice.notification_service.exception.roomClient.RoomServiceException;
-import intexsoft.practice.notification_service.service.RoomClientService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;

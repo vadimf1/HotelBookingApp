@@ -1,4 +1,4 @@
-package intexsoft.practice.notification_service.service;
+package intexsoft.practice.notification_service.service.client;
 
 import intexsoft.practice.notification_service.dto.UserDto;
 

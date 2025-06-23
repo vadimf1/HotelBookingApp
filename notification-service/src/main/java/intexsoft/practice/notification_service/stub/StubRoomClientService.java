@@ -1,7 +1,7 @@
 package intexsoft.practice.notification_service.stub;
 
 import intexsoft.practice.notification_service.dto.RoomDto;
-import intexsoft.practice.notification_service.service.RoomClientService;
+import intexsoft.practice.notification_service.service.client.RoomClientService;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
