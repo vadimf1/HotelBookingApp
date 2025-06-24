@@ -1,6 +1,5 @@
 package IntexSoft.Authorization.controllers;
 
-import IntexSoft.Authorization.kafka.KafkaProducer;
 import IntexSoft.Authorization.models.User;
 import IntexSoft.Authorization.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +17,9 @@ public class UserController {
     private final UserService userService;
 
     @Autowired
-    private final KafkaProducer kafkaProducer;
-    public UserController(UserService userService, KafkaProducer kafkaProducer){
+    public UserController(UserService userService){
         this.userService = userService;
-        this.kafkaProducer = kafkaProducer;
+
     }
 
     @PostMapping("/signup")
@@ -31,7 +29,6 @@ public class UserController {
 
     @PostMapping("/login")
     public String login(@RequestBody User user) throws IOException, SQLException {
-        kafkaProducer.sendMessage(user);
         return userService.login(user);
     }
 

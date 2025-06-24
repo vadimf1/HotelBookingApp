@@ -3,6 +3,7 @@ package IntexSoft.Authorization.models;
 import jakarta.persistence.*;
 import lombok.*;
 
+
 @Data
 @Entity
 @Table(name = "users")
@@ -12,16 +13,16 @@ public class User{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userId;
 
-    @Column(name = "first_name", nullable = false, length = 30)
+    @Column(name = "first_name", nullable = false, length = 50)
     private String firstName;
 
-    @Column(name = "last_name", nullable = false, length = 30)
+    @Column(name = "last_name", nullable = false, length = 50)
     private String lastName;
 
-    @Column(name = "email", nullable = false, length = 60, unique = true)
+    @Column(name = "email", nullable = false, length = 100, unique = true)
     private String email;
 
-    @Column(name = "password", nullable = false, length = 25)
+    @Column(name = "password", nullable = false, length = 255)
     private String password;
 
 }

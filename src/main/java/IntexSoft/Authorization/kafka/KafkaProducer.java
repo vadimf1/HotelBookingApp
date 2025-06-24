@@ -1,6 +1,5 @@
 package IntexSoft.Authorization.kafka;
 
-import IntexSoft.Authorization.models.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -14,13 +13,14 @@ public class KafkaProducer {
     private final KafkaTemplate<String, String> kafkaTemplate;
 
     public KafkaProducer(KafkaTemplate<String, String> kafkaTemplate) {
+
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    public void sendMessage(User user) throws IOException {
+    public void sendMessage(String message) throws IOException {
         StringWriter writer = new StringWriter();
         ObjectMapper mapper = new ObjectMapper();
-        mapper.writeValue(writer, user);
+        mapper.writeValue(writer, message);
         kafkaTemplate.send("Users", writer.toString());
     }
 }
