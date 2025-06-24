@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/hotel_db?stringtype=unspecified
+    username: postgres
+    password: postgres
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master.yml
+
+logging:
+  level:
+    org:
+      hibernate:
+        orm:
+          mapping: DEBUG
