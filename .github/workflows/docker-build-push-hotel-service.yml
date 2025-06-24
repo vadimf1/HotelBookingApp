@@ -39,4 +39,4 @@ jobs:
           context: ./hotel-service
           file: ./hotel-service/Dockerfile
           push: true
-          tags: vadim/hotel-service:latest
+          tags: ${{ secrets.DOCKER_USERNAME_VADIM }}/hotel-service:latest
