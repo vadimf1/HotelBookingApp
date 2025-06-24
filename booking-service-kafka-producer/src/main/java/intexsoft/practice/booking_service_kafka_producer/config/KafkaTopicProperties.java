@@ -11,4 +11,5 @@ public class KafkaTopicProperties {
 
     private String bookingCreated;
     private String bookingCancelled;
+    private String roomResponse;
 }

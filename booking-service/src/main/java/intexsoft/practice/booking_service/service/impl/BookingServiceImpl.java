@@ -9,8 +9,10 @@ import intexsoft.practice.booking_service.mapper.KafkaEventMapper;
 import intexsoft.practice.booking_service.mapper.RoomBookingMapper;
 import intexsoft.practice.booking_service.model.BookingStatus;
 import intexsoft.practice.booking_service.model.BookingStatusEntity;
+import intexsoft.practice.booking_service.model.Room;
 import intexsoft.practice.booking_service.model.RoomBooking;
 import intexsoft.practice.booking_service.repository.BookingRepository;
+import intexsoft.practice.booking_service.repository.RoomRepository;
 import intexsoft.practice.booking_service.service.BookingService;
 import intexsoft.practice.booking_service.service.BookingStatusService;
 import intexsoft.practice.booking_service_kafka_dto.dto.KafkaBookingEventDTO;
@@ -36,18 +38,18 @@ public class BookingServiceImpl implements BookingService {
     private final KafkaProducerService kafkaProducerService;
     private final RoomBookingMapper roomBookingMapper;
     private final KafkaEventMapper kafkaEventMapper;
+    private final RoomRepository  roomRepository;
 
     @Override
     @Transactional
     public BookingResponseDTO createBooking(BookingRequestDTO requestDTO, UUID userId) {
 
         validateDates(requestDTO);
-
-        checkRoomAvailability(requestDTO);
+        Room room = checkRoomAvailability(requestDTO);
 
         BookingStatusEntity bookingStatus = bookingStatusService.getByCode(BookingStatus.CONFIRMED);
 
-        RoomBooking roomBooking = saveBooking(requestDTO, bookingStatus);
+        RoomBooking roomBooking = saveBooking(requestDTO, room, userId, bookingStatus);
 
         sendKafkaEvent(roomBooking);
 
@@ -92,17 +94,23 @@ public class BookingServiceImpl implements BookingService {
         }
     }
 
-    private void checkRoomAvailability(BookingRequestDTO requestDTO) {
-//        if (bookingRepository.existsByRoomIdOverlappingDates(
-//                requestDTO.getRoomId(), requestDTO.getCheckInDate(), requestDTO.getCheckOutDate())) {
-//            throw new InvalidBookingRequestException("Номер уже занят на указанные даты");
-//        }
+    private Room checkRoomAvailability(BookingRequestDTO requestDTO) {
+        Room room = roomRepository.findById(requestDTO.getRoomId())
+                .orElseThrow(() -> new EntityNotFoundException("Комната не найдена"));
 
-        return;
+        if (bookingRepository.existsByRoomIdOverlappingDates(
+                requestDTO.getRoomId(), requestDTO.getCheckInDate(), requestDTO.getCheckOutDate())) {
+            throw new InvalidBookingRequestException("Номер уже занят на указанные даты");
+        }
+
+        return room;
     }
 
-    private RoomBooking saveBooking(BookingRequestDTO requestDTO, BookingStatusEntity bookingStatus) {
-        RoomBooking roomBooking = roomBookingMapper.toEntity(requestDTO, bookingStatus);
+    private RoomBooking saveBooking(BookingRequestDTO requestDTO,
+                                    Room room,
+                                    UUID userId,
+                                    BookingStatusEntity bookingStatus) {
+        RoomBooking roomBooking = roomBookingMapper.toEntity(requestDTO, room, userId, bookingStatus);
 
         roomBooking = bookingRepository.save(roomBooking);
         bookingRepository.flush();

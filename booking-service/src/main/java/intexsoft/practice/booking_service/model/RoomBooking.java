@@ -24,8 +24,9 @@ public class RoomBooking {
     @Column(name = "user_id", nullable = false)
     private UUID userId;
 
-    @Column(name = "room_id", nullable = false)
-    private UUID roomId;
+    @ManyToOne
+    @JoinColumn(name = "room_id", referencedColumnName = "id", nullable = false)
+    private Room room;
 
     @Column(name = "check_in_date", nullable = false)
     private LocalDate checkInDate;

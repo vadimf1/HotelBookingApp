@@ -7,5 +7,6 @@
 
     <include file="classpath:db/changelog/sql/v1/Create_booking_status_table.sql"/>
     <include file="classpath:db/changelog/sql/v1/Insert_into_booking_status_table.sql"/>
+    <include file="classpath:db/changelog/sql/v1/Create_rooms_table.sql"/>
     <include file="classpath:db/changelog/sql/v1/Create_bookings_table.sql"/>
 </databaseChangeLog>

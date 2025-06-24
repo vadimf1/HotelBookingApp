@@ -13,7 +13,7 @@ import java.util.UUID;
 public interface BookingRepository extends JpaRepository<RoomBooking, UUID> {
     @Query("SELECT CASE WHEN COUNT(b) > 0 THEN TRUE ELSE FALSE END " +
             "FROM RoomBooking b " +
-            "WHERE b.roomId = :roomId AND " +
+            "WHERE b.room.id = :roomId AND " +
             "b.bookingStatus.code != 'CANCELLED' AND " +
             "(b.checkInDate <= :checkOutDate AND b.checkOutDate >= :checkInDate)")
     boolean existsByRoomIdOverlappingDates(
@@ -24,7 +24,7 @@ public interface BookingRepository extends JpaRepository<RoomBooking, UUID> {
 
     @Query("SELECT new intexsoft.practice.booking_service.dto.BookedPeriodDTO(b.checkInDate, b.checkOutDate) " +
             "FROM RoomBooking b " +
-            "WHERE b.roomId = :roomId AND b.checkOutDate >= CURRENT_DATE")
+            "WHERE b.room.id = :roomId AND b.checkOutDate >= CURRENT_DATE")
     List<BookedPeriodDTO> findBookedPeriodsByRoomId(UUID roomId);
 
 }

@@ -6,11 +6,15 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Getter
 @Setter
 @ToString
 public class BookingRequestDTO {
+
+    @NotNull(message = "Room ID is required")
+    private UUID roomId;
 
     @NotNull(message = "Check-in date is required")
     @FutureOrPresent(message = "Check-in date must be today or in the future")
