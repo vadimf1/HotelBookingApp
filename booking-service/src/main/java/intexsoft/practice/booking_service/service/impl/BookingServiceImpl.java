@@ -39,7 +39,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     @Transactional
-    public BookingResponseDTO createBooking(BookingRequestDTO requestDTO) {
+    public BookingResponseDTO createBooking(BookingRequestDTO requestDTO, UUID userId) {
 
         validateDates(requestDTO);
 
@@ -93,10 +93,12 @@ public class BookingServiceImpl implements BookingService {
     }
 
     private void checkRoomAvailability(BookingRequestDTO requestDTO) {
-        if (bookingRepository.existsByRoomIdOverlappingDates(
-                requestDTO.getRoomId(), requestDTO.getCheckInDate(), requestDTO.getCheckOutDate())) {
-            throw new InvalidBookingRequestException("Номер уже занят на указанные даты");
-        }
+//        if (bookingRepository.existsByRoomIdOverlappingDates(
+//                requestDTO.getRoomId(), requestDTO.getCheckInDate(), requestDTO.getCheckOutDate())) {
+//            throw new InvalidBookingRequestException("Номер уже занят на указанные даты");
+//        }
+
+        return;
     }
 
     private RoomBooking saveBooking(BookingRequestDTO requestDTO, BookingStatusEntity bookingStatus) {

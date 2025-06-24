@@ -18,16 +18,28 @@ public class BookingController {
 
     private final BookingService bookingService;
     private final KafkaResponseCache kafkaResponseCache;
+    private final JwtUtil jwtUtil;
 
     @Autowired
-    public BookingController(BookingService bookingService,  KafkaResponseCache kafkaResponseCache) {
+    public BookingController(BookingService bookingService, KafkaResponseCache kafkaResponseCache, JwtUtil jwtUtil) {
         this.bookingService = bookingService;
         this.kafkaResponseCache = kafkaResponseCache;
+        this.jwtUtil = jwtUtil;
     }
 
     @PostMapping
-    public BookingResponseDTO createBooking(@Valid @RequestBody BookingRequestDTO requestDTO) {
-        return bookingService.createBooking(requestDTO);
+    public BookingResponseDTO createBooking(@Valid @RequestBody BookingRequestDTO requestDTO,
+                                            @RequestHeader("Authorization") String authHeader) {
+        String token;
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            token = authHeader.substring(7); // Убираем "Bearer "
+        } else {
+            token = authHeader; // Используем как есть (для тестов)
+        }
+
+        UUID userId = UUID.fromString(jwtUtil.extractUserId(token));
+
+        return bookingService.createBooking(requestDTO, userId);
     }
 
     @PutMapping("cancel/{bookingId}")

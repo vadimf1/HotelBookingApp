@@ -7,7 +7,7 @@ import intexsoft.practice.booking_service.dto.RoomAvailabilityDTO;
 import java.util.UUID;
 
 public interface BookingService {
-    BookingResponseDTO createBooking(BookingRequestDTO bookingRequestDTO);
+    BookingResponseDTO createBooking(BookingRequestDTO bookingRequestDTO, UUID userId);
     BookingResponseDTO cancelBooking(UUID bookingId);
     RoomAvailabilityDTO getBookedPeriods(UUID roomId);
 }
