@@ -38,6 +38,8 @@ import static org.mockito.Mockito.*;
 @Testcontainers
 public class BookingNotificationIntegrationTest extends AbstractPostgresIntegrationTest {
 
+    private static final String BOOKING_TEMPLATE = "booking-notification.ftl";
+
     @Autowired
     private BookingNotificationServiceImpl bookingNotificationService;
 
@@ -72,9 +74,9 @@ public class BookingNotificationIntegrationTest extends AbstractPostgresIntegrat
 
     @Test
     void testNotify_shouldSaveNotificationAndSendEmail() {
-        UUID bookingId = UUID.fromString("123e4567-e89b-12d3-a456-426614174013");
-        UUID userId = UUID.fromString("123e4567-e89b-12d3-a456-426614174000");
-        UUID roomId = UUID.fromString("987e6543-e21b-32c3-b654-426614174999");
+        UUID bookingId = UUID.randomUUID();
+        UUID userId = UUID.randomUUID();
+        UUID roomId = UUID.randomUUID();
 
         BookingCreatedNotification notificationDto = new BookingCreatedNotification(
                 bookingId,
@@ -101,7 +103,7 @@ public class BookingNotificationIntegrationTest extends AbstractPostgresIntegrat
         when(localeMappingService.getLocaleForCountry("US")).thenReturn(Locale.US);
         when(localizedMessageService.getBulk(BookingNotificationMessageKeys.ALL_KEYS, Locale.US))
                 .thenReturn(messages);
-        when(contentBuilder.build(eq("booking-notification.ftl"), any(Map.class))).thenReturn(emailBody);
+        when(contentBuilder.build(eq(BOOKING_TEMPLATE), any(Map.class))).thenReturn(emailBody);
         when(bookingNotificationMapper.toEntity(notificationDto)).thenReturn(bookingNotification);
 
         bookingNotificationService.notify(notificationDto);
@@ -123,9 +125,10 @@ public class BookingNotificationIntegrationTest extends AbstractPostgresIntegrat
 
         verify(localeMappingService, times(1)).getLocaleForCountry("US");
 
-        verify(localizedMessageService, times(1)).getBulk(BookingNotificationMessageKeys.ALL_KEYS, Locale.US);
+        verify(localizedMessageService, times(1))
+                .getBulk(BookingNotificationMessageKeys.ALL_KEYS, Locale.US);
 
-        verify(contentBuilder).build(eq("booking-notification.ftl"), argThat(
+        verify(contentBuilder).build(eq(BOOKING_TEMPLATE), argThat(
                 model -> model.containsKey("bookingId")
                         && model.containsKey("checkInDate")
                         && model.containsKey("checkOutDate")
