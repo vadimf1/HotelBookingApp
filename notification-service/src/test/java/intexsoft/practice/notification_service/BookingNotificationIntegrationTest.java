@@ -3,24 +3,17 @@ package intexsoft.practice.notification_service;
 import intexsoft.practice.dto.notification.BookingCreatedNotification;
 import intexsoft.practice.notification_service.entity.BookingNotification;
 import intexsoft.practice.notification_service.localization.BookingNotificationMessageKeys;
-import intexsoft.practice.notification_service.mapper.BookingNotificationMapper;
 import intexsoft.practice.notification_service.repository.BookingNotificationRepository;
 import intexsoft.practice.notification_service.service.booking.BookingNotificationServiceImpl;
-import intexsoft.practice.notification_service.service.client.RoomClientService;
-import intexsoft.practice.notification_service.service.client.UserClientService;
 import intexsoft.practice.notification_service.service.localization.LocaleMappingService;
 import intexsoft.practice.notification_service.service.localization.LocalizedMessageService;
 import intexsoft.practice.notification_service.service.mail.FreeMarkerMailContentBuilder;
 import intexsoft.practice.notification_service.service.mail.MailSenderService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -32,10 +25,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 @ActiveProfiles("test")
-@SpringBootTest
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@Import(WireMockMultiEndpointConfig.class)
-@Testcontainers
+@Import({WireMockMultiEndpointConfig.class, TestMocksConfig.class})
 public class BookingNotificationIntegrationTest extends AbstractPostgresIntegrationTest {
 
     private static final String BOOKING_TEMPLATE = "booking-notification.ftl";
@@ -46,26 +36,17 @@ public class BookingNotificationIntegrationTest extends AbstractPostgresIntegrat
     @Autowired
     private BookingNotificationRepository bookingNotificationRepository;
 
-    @MockBean
+    @Autowired
     private MailSenderService mailSenderService;
 
-    @MockBean
-    private UserClientService userClientService;
-
-    @MockBean
-    private RoomClientService roomClientService;
-
-    @MockBean
+    @Autowired
     private LocaleMappingService localeMappingService;
 
-    @MockBean
+    @Autowired
     private LocalizedMessageService localizedMessageService;
 
-    @MockBean
+    @Autowired
     private FreeMarkerMailContentBuilder contentBuilder;
-
-    @MockBean
-    private BookingNotificationMapper bookingNotificationMapper;
 
     @AfterEach
     void tearDown() {
@@ -86,9 +67,6 @@ public class BookingNotificationIntegrationTest extends AbstractPostgresIntegrat
                 LocalDate.now().plusDays(3)
         );
 
-        when(userClientService.getUserById(userId)).thenReturn(StubDataFactory.createUserDto());
-        when(roomClientService.getRoomById(roomId)).thenReturn(StubDataFactory.createRoomDto());
-
         Map<String, String> messages = new HashMap<>();
         messages.put(BookingNotificationMessageKeys.SUBJECT, "Booking Confirmation");
         String emailBody = "<html>Booking Confirmation Email</html>";
@@ -104,7 +82,6 @@ public class BookingNotificationIntegrationTest extends AbstractPostgresIntegrat
         when(localizedMessageService.getBulk(BookingNotificationMessageKeys.ALL_KEYS, Locale.US))
                 .thenReturn(messages);
         when(contentBuilder.build(eq(BOOKING_TEMPLATE), any(Map.class))).thenReturn(emailBody);
-        when(bookingNotificationMapper.toEntity(notificationDto)).thenReturn(bookingNotification);
 
         bookingNotificationService.notify(notificationDto);
 
