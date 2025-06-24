@@ -1,14 +1,46 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/hotel_db?stringtype=unspecified
-    username: postgres
-    password: postgres
+    url: jdbc:postgresql://postgres:5432/hotel_db?stringtype=unspecified
+    username: user
+    password: password
+
   jpa:
     hibernate:
       ddl-auto: none
     show-sql: false
     properties:
-      hibernate.default_schema: hotel_service
+      hibernate:
+        default_schema: hotel_service
+
   liquibase:
     change-log: classpath:/db/changelog/db.changelog-master.yml
-    default-schema: hotel_service
+
+  kafka:
+    bootstrap-servers: kafka:9092
+
+    consumer:
+      group-id: hotel-service
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      properties:
+        spring:
+          deserializer:
+            value:
+              delegate:
+                class: org.springframework.kafka.support.serializer.JsonDeserializer
+          json:
+            trusted:
+              packages: intexsoft.practice.dto
+            value:
+              default:
+                type: intexsoft.practice.dto.KafkaRequestRoomDto
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      client-id: hotel-service-client
+
+hotel:
+  kafka:
+    topic:
+      request: room-request-events
+      response: room-response-events

@@ -4,6 +4,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -12,6 +14,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.UuidGenerator;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Builder
@@ -36,7 +40,7 @@ public class Room {
 
     @ManyToOne
     @JoinColumn(name = "room_status_id")
-    private RoomStatus status;
+    private RoomStatus roomStatus;
 
     @Column(name = "room_number")
     private Integer roomNumber;
@@ -49,4 +53,19 @@ public class Room {
 
     @Column(name = "description")
     private String description;
+
+    @ManyToMany
+    @JoinTable(
+            name = "room_amenities",
+            joinColumns = @JoinColumn(name = "room_id"),
+            inverseJoinColumns = @JoinColumn(name = "amenity_id")
+    )
+    private Set<Amenity> amenities;
+
+    public void addAmenity(Amenity amenity) {
+        if (amenities == null) {
+            amenities = new HashSet<>();
+        }
+        amenities.add(amenity);
+    }
 }
