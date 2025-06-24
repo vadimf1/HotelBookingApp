@@ -5,8 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import intexsoft.practice.notification_service.dto.RoomDto;
 import intexsoft.practice.notification_service.dto.UserDto;
 
-import java.math.BigDecimal;
-
 public class StubDataFactory {
 
     private static final ObjectMapper mapper = new ObjectMapper();
