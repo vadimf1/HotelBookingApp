@@ -4,9 +4,7 @@ import intexsoft.practice.dto.notification.AccountLoginNotification;
 import intexsoft.practice.notification_service.dto.IpInfoResponse;
 import intexsoft.practice.notification_service.entity.LoginNotification;
 import intexsoft.practice.notification_service.localization.NotificationLoginMessageKeys;
-import intexsoft.practice.notification_service.mapper.LoginNotificationMapper;
 import intexsoft.practice.notification_service.repository.LoginNotificationRepository;
-import intexsoft.practice.notification_service.service.client.UserClientService;
 import intexsoft.practice.notification_service.service.ip.IpInfoService;
 import intexsoft.practice.notification_service.service.localization.LocaleMappingService;
 import intexsoft.practice.notification_service.service.localization.LocalizedMessageService;
@@ -80,18 +78,7 @@ public class UserLoginNotificationIntegrationTest extends AbstractPostgresIntegr
         Map<String, String> messages = new HashMap<>();
         messages.put(NotificationLoginMessageKeys.SUBJECT, "Login Notification");
         String emailBody = "<html>Login Notification</html>";
-
-        LoginNotification loginNotification = new LoginNotification(
-                null,
-                ip,
-                ipInfoResponse.getCountry(),
-                ipInfoResponse.getCity(),
-                agent,
-                userId,
-                loggedAt,
-                null
-        );
-
+        
         when(ipInfoService.getIpInfo(ip)).thenReturn(ipInfoResponse);
         when(localeMappingService.getLocaleForCountry(ipInfoResponse.getCountryCode())).thenReturn(Locale.US);
         when(localizedMessageService.getBulk(NotificationLoginMessageKeys.ALL_KEYS, Locale.US))
