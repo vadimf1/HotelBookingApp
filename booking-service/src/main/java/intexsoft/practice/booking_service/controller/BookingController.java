@@ -6,7 +6,8 @@ import intexsoft.practice.booking_service.dto.RoomAvailabilityDTO;
 import intexsoft.practice.booking_service.service.BookingService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -23,10 +24,10 @@ public class BookingController {
     }
 
     @PostMapping
-    public BookingResponseDTO createBooking(@Valid @RequestBody BookingRequestDTO requestDTO,
-                                            @AuthenticationPrincipal String userIdStr) {
+    public BookingResponseDTO createBooking(@Valid @RequestBody BookingRequestDTO requestDTO) {
+        Authentication auth =  SecurityContextHolder.getContext().getAuthentication();
+        UUID userId = UUID.fromString(auth.getPrincipal().toString());
 
-        UUID userId = UUID.fromString(userIdStr);
         return bookingService.createBooking(requestDTO, userId);
     }
 
