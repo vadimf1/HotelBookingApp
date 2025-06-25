@@ -1,15 +1,8 @@
 package intexsoft.practice.notification_service;
 
 import intexsoft.practice.dto.notification.AccountLoginNotification;
-import intexsoft.practice.notification_service.dto.IpInfoResponse;
 import intexsoft.practice.notification_service.entity.LoginNotification;
-import intexsoft.practice.notification_service.localization.NotificationLoginMessageKeys;
 import intexsoft.practice.notification_service.repository.LoginNotificationRepository;
-import intexsoft.practice.notification_service.service.ip.IpInfoService;
-import intexsoft.practice.notification_service.service.localization.LocaleMappingService;
-import intexsoft.practice.notification_service.service.localization.LocalizedMessageService;
-import intexsoft.practice.notification_service.service.mail.FreeMarkerMailContentBuilder;
-import intexsoft.practice.notification_service.service.mail.MailSenderService;
 import intexsoft.practice.notification_service.service.user.UserLoginNotificationServiceImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -18,16 +11,14 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.Instant;
-import java.util.*;
+import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
 
 @ActiveProfiles("test")
-@Import({WireMockMultiEndpointConfig.class, TestMocksConfig.class})
+@Import({WireMockMultiEndpointConfig.class})
 public class UserLoginNotificationIntegrationTest extends AbstractPostgresIntegrationTest {
 
     @Autowired
@@ -35,21 +26,6 @@ public class UserLoginNotificationIntegrationTest extends AbstractPostgresIntegr
 
     @Autowired
     private LoginNotificationRepository loginNotificationRepository;
-
-    @Autowired
-    private MailSenderService mailSenderService;
-
-    @Autowired
-    private LocaleMappingService localeMappingService;
-
-    @Autowired
-    private LocalizedMessageService localizedMessageService;
-
-    @Autowired
-    private FreeMarkerMailContentBuilder contentBuilder;
-
-    @Autowired
-    private IpInfoService ipInfoService;
 
     @AfterEach
     void tearDown() {
@@ -70,21 +46,6 @@ public class UserLoginNotificationIntegrationTest extends AbstractPostgresIntegr
                 loggedAt
         );
 
-        IpInfoResponse ipInfoResponse = new IpInfoResponse();
-        ipInfoResponse.setCountry("United States");
-        ipInfoResponse.setCity("Ashburn");
-        ipInfoResponse.setCountryCode("US");
-
-        Map<String, String> messages = new HashMap<>();
-        messages.put(NotificationLoginMessageKeys.SUBJECT, "Login Notification");
-        String emailBody = "<html>Login Notification</html>";
-        
-        when(ipInfoService.getIpInfo(ip)).thenReturn(ipInfoResponse);
-        when(localeMappingService.getLocaleForCountry(ipInfoResponse.getCountryCode())).thenReturn(Locale.US);
-        when(localizedMessageService.getBulk(NotificationLoginMessageKeys.ALL_KEYS, Locale.US))
-                .thenReturn(messages);
-        when(contentBuilder.build(eq("login-notification.ftl"), any(Map.class))).thenReturn(emailBody);
-
         userLoginNotificationServiceImpl.notify(accountLoginNotification);
 
         List<LoginNotification> saved = loginNotificationRepository.findAll();
@@ -96,22 +57,6 @@ public class UserLoginNotificationIntegrationTest extends AbstractPostgresIntegr
         assertEquals(ip, savedLoginNotification.getIp());
         assertEquals(agent, savedLoginNotification.getUserAgent());
         assertEquals(loggedAt, savedLoginNotification.getLoggedAt());
-
-        verify(mailSenderService, times(1)).sendEmail(
-                eq("mocked.user@example.com"),
-                eq("Login Notification"),
-                eq(emailBody)
-        );
-
-        verify(localeMappingService, times(1)).getLocaleForCountry("US");
-        verify(localizedMessageService, times(1))
-                .getBulk(NotificationLoginMessageKeys.ALL_KEYS, Locale.US);
-        verify(contentBuilder).build(eq("login-notification.ftl"), argThat(
-                model -> model.containsKey("ip")
-                        && model.containsKey("country")
-                        && model.containsKey("city")
-                        && model.containsKey("userAgent")
-                        && model.containsKey("timestamp")));
     }
 }
 

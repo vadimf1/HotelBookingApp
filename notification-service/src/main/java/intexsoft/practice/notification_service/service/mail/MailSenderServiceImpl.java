@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-@Profile("!test")
 public class MailSenderServiceImpl implements MailSenderService {
 
     private final JavaMailSender mailSender;
