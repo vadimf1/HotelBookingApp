@@ -2,9 +2,11 @@ package intexsoft.practice.notification_service.service.user;
 
 import intexsoft.practice.dto.notification.AccountLoginNotification;
 import intexsoft.practice.notification_service.dto.IpInfoResponse;
+import intexsoft.practice.notification_service.dto.UserDto;
 import intexsoft.practice.notification_service.entity.LoginNotification;
 import intexsoft.practice.notification_service.localization.NotificationLoginMessageKeys;
 import intexsoft.practice.notification_service.mapper.LoginNotificationMapper;
+import intexsoft.practice.notification_service.service.client.UserClientService;
 import intexsoft.practice.notification_service.service.ip.IpInfoService;
 import intexsoft.practice.notification_service.service.localization.LocaleMappingService;
 import intexsoft.practice.notification_service.service.localization.LocalizedMessageService;
@@ -32,10 +34,12 @@ public class UserLoginNotificationServiceImpl implements NotificationService<Acc
     private final LoginNotificationMapper loginNotificationMapper;
     private final LocalizedMessageService localizedMessageService;
     private final LocaleMappingService localeMappingService;
+    private final UserClientService userClientService;
 
     @Override
     public void notify(AccountLoginNotification dto) {
-        String email = "default@example.com";
+        UserDto userDto = userClientService.getUserById(dto.userId());
+        String email = userDto.getEmail();
 
         IpInfoResponse ipInfoResponse = ipInfoService.getIpInfo(dto.ip());
 

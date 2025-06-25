@@ -1,5 +1,6 @@
 package intexsoft.practice.notification_service.service.client;
 
+import intexsoft.practice.notification_service.config.client.RoomClientProperties;
 import intexsoft.practice.notification_service.config.client.UserClientProperties;
 import intexsoft.practice.notification_service.dto.RoomDto;
 import intexsoft.practice.notification_service.exception.roomClient.RoomNetworkException;
@@ -24,7 +25,7 @@ import java.util.UUID;
 public class RoomClientServiceImpl implements RoomClientService {
 
     private final RestTemplate restTemplate;
-    private final UserClientProperties roomClientProperties;
+    private final RoomClientProperties roomClientProperties;
 
     @Retryable(
             value = {HttpServerErrorException.class, ResourceAccessException.class},
