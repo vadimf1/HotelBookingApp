@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class JwtSecurityService {
@@ -40,11 +41,11 @@ public class JwtSecurityService {
     }
 
     public String extractUserId(String token) {
-        return extractAllClaims(token).get("userId", String.class);
+        return extractAllClaims(token).getSubject();
     }
 
-    public String extractRole(String token) {
-        return extractAllClaims(token).get("role", String.class);
+    public List<String> extractRoles(String token) {
+        return extractAllClaims(token).get("roles", List.class);
     }
 }
 

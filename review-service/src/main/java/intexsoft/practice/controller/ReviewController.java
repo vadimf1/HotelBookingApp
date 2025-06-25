@@ -7,6 +7,7 @@ import intexsoft.practice.service.ReviewService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -42,12 +43,14 @@ public class ReviewController {
     }
 
     @PatchMapping("/{id}")
+    @PreAuthorize("@reviewSecurityService.checkOwnership(#id)")
     public ResponseEntity<ResponseReviewDto> updateReview(@PathVariable UUID id, @Valid @RequestBody UpdateReviewDto updateReviewDto) {
         ResponseReviewDto responseReviewDto = reviewService.updateReview(id, updateReviewDto);
         return ResponseEntity.ok(responseReviewDto);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("@reviewSecurityService.checkOwnership(#id)")
     public ResponseEntity<String> deleteReview(@PathVariable("id") UUID id) {
         reviewService.deleteReviewById(id);
         return ResponseEntity.ok("Review deleted successfully");

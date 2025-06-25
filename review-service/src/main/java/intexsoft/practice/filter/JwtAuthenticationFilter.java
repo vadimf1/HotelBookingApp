@@ -19,6 +19,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -29,8 +30,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,
-            @NonNull  HttpServletResponse response,
-            @NonNull  FilterChain filterChain
+            @NonNull HttpServletResponse response,
+            @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
 
         String header = request.getHeader("Authorization");
@@ -47,13 +48,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         String userId = jwtSecurityService.extractUserId(jwt);
-        String role   = jwtSecurityService.extractRole(jwt);
+        List<String> roles = jwtSecurityService.extractRoles(jwt);
 
         if (StringUtils.isNotEmpty(userId) &&
                 SecurityContextHolder.getContext().getAuthentication() == null) {
 
-            List<GrantedAuthority> authorities = role != null
-                    ? List.of(new SimpleGrantedAuthority(role))
+            List<GrantedAuthority> authorities = roles != null
+                    ? roles.stream()
+                    .map(SimpleGrantedAuthority::new)
+                    .collect(Collectors.toList())
                     : List.of();
 
             UsernamePasswordAuthenticationToken authToken =
@@ -69,5 +72,3 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 }
-
-
