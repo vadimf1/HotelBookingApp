@@ -1,3 +1,4 @@
+HELP.md
 ### Maven ###
 target/
 pom.xml.tag
@@ -11,12 +12,26 @@ build.log
 ### Maven Wrapper ###
 .mvn/
 .mvn/wrapper/maven-wrapper.jar
+.mvn/wrapper/maven-wrapper.properties
+.mvn
+!**/src/main/**/target/
+!**/src/test/**/target/
 mvnw
 mvnw.cmd
 
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
 ### Logs ###
 *.log
 
+### IntelliJ IDEA ###
+.idea
 ### Spring Boot config ###
 # Ignore only local config with secrets
 application-local.yml
@@ -46,6 +61,9 @@ out/
 /dist/
 /nbdist/
 /.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
 
 ### OS / Misc ###
 .DS_Store

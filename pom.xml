@@ -13,6 +13,9 @@
         <module>notification-service</module>
         <module>notification-kafka-producer-lib</module>
         <module>notification-kafka-dto-lib</module>
+        <module>booking-service</module>
+        <module>booking-service-kafka-producer</module>
+        <module>booking-service-kafka-dto</module>
     </modules>
 
     <properties>
