@@ -1,7 +1,7 @@
 --liquibase formatted sql
 
---changeset vadim:insert_clients
-INSERT INTO user_service.clients (id, name)
+--changeset vadim:insert_users
+INSERT INTO user_service.users (id, name)
 VALUES
     (gen_random_uuid(), 'name1'),
     (gen_random_uuid(), 'name2'),
@@ -43,15 +43,15 @@ VALUES
     (gen_random_uuid());
 
 --changeset vadim:insert_reviews
-INSERT INTO review_service.reviews (id, client_id, hotel_id, room_id, rating, description, created_at)
+INSERT INTO review_service.reviews (id, user_id, hotel_id, room_id, rating, description, created_at)
 VALUES
-    (gen_random_uuid(), (SELECT id FROM user_service.clients LIMIT 1), (SELECT id FROM hotel_service.hotels LIMIT 1), (SELECT id FROM hotel_service.rooms LIMIT 1), 5, 'Excellent stay!', NOW()),
-    (gen_random_uuid(), (SELECT id FROM user_service.clients OFFSET 1 LIMIT 1), (SELECT id FROM hotel_service.hotels OFFSET 1 LIMIT 1), (SELECT id FROM hotel_service.rooms OFFSET 1 LIMIT 1), 4, 'Very good.', NOW()),
-    (gen_random_uuid(), (SELECT id FROM user_service.clients OFFSET 2 LIMIT 1), (SELECT id FROM hotel_service.hotels OFFSET 2 LIMIT 1), (SELECT id FROM hotel_service.rooms OFFSET 2 LIMIT 1), 3, 'Average.', NOW()),
-    (gen_random_uuid(), (SELECT id FROM user_service.clients OFFSET 3 LIMIT 1), (SELECT id FROM hotel_service.hotels OFFSET 3 LIMIT 1), (SELECT id FROM hotel_service.rooms OFFSET 3 LIMIT 1), 5, 'Loved it!', NOW()),
-    (gen_random_uuid(), (SELECT id FROM user_service.clients OFFSET 4 LIMIT 1), (SELECT id FROM hotel_service.hotels OFFSET 4 LIMIT 1), (SELECT id FROM hotel_service.rooms OFFSET 4 LIMIT 1), 2, 'Not great.', NOW()),
-    (gen_random_uuid(), (SELECT id FROM user_service.clients OFFSET 5 LIMIT 1), (SELECT id FROM hotel_service.hotels OFFSET 5 LIMIT 1), (SELECT id FROM hotel_service.rooms OFFSET 5 LIMIT 1), 4, 'Comfortable.', NOW()),
-    (gen_random_uuid(), (SELECT id FROM user_service.clients OFFSET 6 LIMIT 1), (SELECT id FROM hotel_service.hotels OFFSET 6 LIMIT 1), (SELECT id FROM hotel_service.rooms OFFSET 6 LIMIT 1), 5, 'Perfect experience.', NOW()),
-    (gen_random_uuid(), (SELECT id FROM user_service.clients OFFSET 7 LIMIT 1), (SELECT id FROM hotel_service.hotels OFFSET 7 LIMIT 1), (SELECT id FROM hotel_service.rooms OFFSET 7 LIMIT 1), 3, 'Okayish.', NOW()),
-    (gen_random_uuid(), (SELECT id FROM user_service.clients OFFSET 8 LIMIT 1), (SELECT id FROM hotel_service.hotels OFFSET 8 LIMIT 1), (SELECT id FROM hotel_service.rooms OFFSET 8 LIMIT 1), 4, 'Nice room.', NOW()),
-    (gen_random_uuid(), (SELECT id FROM user_service.clients OFFSET 9 LIMIT 1), (SELECT id FROM hotel_service.hotels OFFSET 9 LIMIT 1), (SELECT id FROM hotel_service.rooms OFFSET 9 LIMIT 1), 5, 'Awesome service.', NOW());
+    (gen_random_uuid(), (SELECT id FROM user_service.users LIMIT 1), (SELECT id FROM hotel_service.hotels LIMIT 1), (SELECT id FROM hotel_service.rooms LIMIT 1), 5, 'Excellent stay!', NOW()),
+    (gen_random_uuid(), (SELECT id FROM user_service.users OFFSET 1 LIMIT 1), (SELECT id FROM hotel_service.hotels OFFSET 1 LIMIT 1), (SELECT id FROM hotel_service.rooms OFFSET 1 LIMIT 1), 4, 'Very good.', NOW()),
+    (gen_random_uuid(), (SELECT id FROM user_service.users OFFSET 2 LIMIT 1), (SELECT id FROM hotel_service.hotels OFFSET 2 LIMIT 1), (SELECT id FROM hotel_service.rooms OFFSET 2 LIMIT 1), 3, 'Average.', NOW()),
+    (gen_random_uuid(), (SELECT id FROM user_service.users OFFSET 3 LIMIT 1), (SELECT id FROM hotel_service.hotels OFFSET 3 LIMIT 1), (SELECT id FROM hotel_service.rooms OFFSET 3 LIMIT 1), 5, 'Loved it!', NOW()),
+    (gen_random_uuid(), (SELECT id FROM user_service.users OFFSET 4 LIMIT 1), (SELECT id FROM hotel_service.hotels OFFSET 4 LIMIT 1), (SELECT id FROM hotel_service.rooms OFFSET 4 LIMIT 1), 2, 'Not great.', NOW()),
+    (gen_random_uuid(), (SELECT id FROM user_service.users OFFSET 5 LIMIT 1), (SELECT id FROM hotel_service.hotels OFFSET 5 LIMIT 1), (SELECT id FROM hotel_service.rooms OFFSET 5 LIMIT 1), 4, 'Comfortable.', NOW()),
+    (gen_random_uuid(), (SELECT id FROM user_service.users OFFSET 6 LIMIT 1), (SELECT id FROM hotel_service.hotels OFFSET 6 LIMIT 1), (SELECT id FROM hotel_service.rooms OFFSET 6 LIMIT 1), 5, 'Perfect experience.', NOW()),
+    (gen_random_uuid(), (SELECT id FROM user_service.users OFFSET 7 LIMIT 1), (SELECT id FROM hotel_service.hotels OFFSET 7 LIMIT 1), (SELECT id FROM hotel_service.rooms OFFSET 7 LIMIT 1), 3, 'Okayish.', NOW()),
+    (gen_random_uuid(), (SELECT id FROM user_service.users OFFSET 8 LIMIT 1), (SELECT id FROM hotel_service.hotels OFFSET 8 LIMIT 1), (SELECT id FROM hotel_service.rooms OFFSET 8 LIMIT 1), 4, 'Nice room.', NOW()),
+    (gen_random_uuid(), (SELECT id FROM user_service.users OFFSET 9 LIMIT 1), (SELECT id FROM hotel_service.hotels OFFSET 9 LIMIT 1), (SELECT id FROM hotel_service.rooms OFFSET 9 LIMIT 1), 5, 'Awesome service.', NOW());

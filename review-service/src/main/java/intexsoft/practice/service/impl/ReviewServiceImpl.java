@@ -11,12 +11,10 @@ import intexsoft.practice.repository.HotelRepository;
 import intexsoft.practice.repository.ReviewRepository;
 import intexsoft.practice.repository.RoomRepository;
 import intexsoft.practice.service.ReviewService;
-import intexsoft.practice.exception.code.ClientExceptionCode;
-import intexsoft.practice.exception.code.HotelExceptionCode;
-import intexsoft.practice.exception.code.ReviewExceptionCode;
-import intexsoft.practice.exception.code.RoomExceptionCode;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,17 +34,17 @@ public class ReviewServiceImpl implements ReviewService {
         Review review = reviewMapper.toEntity(addReviewDto);
         review.setHotel(
                 hotelRepository.findById(addReviewDto.getHotelId())
-                        .orElseThrow(() -> new ServiceException(HotelExceptionCode.HOTEL_NOT_FOUNT_BY_ID.getMessage() + addReviewDto.getHotelId()))
+                        .orElseThrow(() -> new ServiceException("Hotel not found with ID: " + addReviewDto.getHotelId()))
 
         );
         review.setRoom(
                 roomRepository.findById(addReviewDto.getRoomId())
-                        .orElseThrow(() -> new ServiceException(RoomExceptionCode.ROOM_NOT_FOUNT_BY_ID.getMessage() + addReviewDto.getRoomId()))
+                        .orElseThrow(() -> new ServiceException("Room not found with ID: " + addReviewDto.getRoomId()))
 
         );
-        review.setClient(
-                clientRepository.findById(addReviewDto.getClientId())
-                        .orElseThrow(() -> new ServiceException(ClientExceptionCode.CLIENT_NOT_FOUNT_BY_ID.getMessage() + addReviewDto.getClientId()))
+        review.setUser(
+                clientRepository.findById(addReviewDto.getUserId())
+                        .orElseThrow(() -> new ServiceException("User not found with ID: " + addReviewDto.getUserId()))
         );
         Review savedReview = reviewRepository.save(review);
         return reviewMapper.toDto(savedReview);
@@ -62,30 +60,39 @@ public class ReviewServiceImpl implements ReviewService {
     public ResponseReviewDto getReviewById(UUID id) {
         return reviewRepository.findById(id)
                 .map(reviewMapper::toDto)
-                .orElseThrow(() -> new ServiceException(ReviewExceptionCode.REVIEW_NOT_FOUNT_BY_ID.getMessage() + id));
+                .orElseThrow(() -> new ServiceException("Review not found with ID: " + id));
     }
 
     public ResponseReviewDto updateReview(UUID id, UpdateReviewDto updateReviewDto) {
         Review review = reviewRepository.findById(id)
-                .orElseThrow(() -> new ServiceException(ReviewExceptionCode.REVIEW_NOT_FOUNT_BY_ID.getMessage() + id));
+                .orElseThrow(() -> new ServiceException("Review not found with ID: " + id));
+
+        String currentUserId = (String) SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getPrincipal();
+
+        if (!review.getUser().getId().toString().equals(currentUserId)) {
+            throw new AccessDeniedException("Access denied: you can only manage your own reviews");
+        }
+
         if (updateReviewDto.getHotelId() != null) {
             review.setHotel(
                     hotelRepository.findById(updateReviewDto.getHotelId())
-                            .orElseThrow(() -> new ServiceException(HotelExceptionCode.HOTEL_NOT_FOUNT_BY_ID.getMessage() + updateReviewDto.getHotelId()))
+                            .orElseThrow(() -> new ServiceException("Hotel not found with ID: " + updateReviewDto.getHotelId()))
 
             );
         }
         if (updateReviewDto.getRoomId() != null) {
             review.setRoom(
                     roomRepository.findById(updateReviewDto.getRoomId())
-                            .orElseThrow(() -> new ServiceException(RoomExceptionCode.ROOM_NOT_FOUNT_BY_ID.getMessage() + updateReviewDto.getRoomId()))
+                            .orElseThrow(() -> new ServiceException("Room not found with ID: " + updateReviewDto.getRoomId()))
 
             );
         }
-        if (updateReviewDto.getClientId() != null) {
-            review.setClient(
-                    clientRepository.findById(updateReviewDto.getClientId())
-                            .orElseThrow(() -> new ServiceException(ClientExceptionCode.CLIENT_NOT_FOUNT_BY_ID.getMessage() + updateReviewDto.getClientId()))
+        if (updateReviewDto.getUserId() != null) {
+            review.setUser(
+                    clientRepository.findById(updateReviewDto.getUserId())
+                            .orElseThrow(() -> new ServiceException("User not found with ID: " + updateReviewDto.getUserId()))
             );
         }
         reviewMapper.updateEntityFromDto(updateReviewDto, review);
@@ -94,6 +101,16 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     public void deleteReviewById(UUID id) {
+        Review review = reviewRepository.findById(id)
+                .orElseThrow(() -> new ServiceException("Review not found with ID: " + id));
+
+        String currentUserId = (String) SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getPrincipal();
+
+        if (!review.getUser().getId().toString().equals(currentUserId)) {
+            throw new AccessDeniedException("Access denied: you can only manage your own reviews");
+        }
         reviewRepository.deleteById(id);
     }
 }

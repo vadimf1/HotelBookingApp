@@ -6,7 +6,7 @@ CREATE SCHEMA IF NOT EXISTS review_service;
 --changeset vadim:create_reviews
 CREATE TABLE review_service.reviews (
     id UUID PRIMARY KEY,
-    client_id UUID REFERENCES user_service.clients NOT NULL,
+    user_id UUID REFERENCES user_service.clients NOT NULL,
     hotel_id UUID REFERENCES hotel_service.hotels(id) NOT NULL,
     room_id UUID REFERENCES hotel_service.rooms(id),
     rating INT NOT NULL CHECK (rating >= 0 AND rating <= 5),

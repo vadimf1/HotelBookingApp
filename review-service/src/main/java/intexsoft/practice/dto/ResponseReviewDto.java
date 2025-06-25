@@ -10,7 +10,7 @@ import java.util.UUID;
 @Builder
 public class ResponseReviewDto {
     private UUID id;
-    private ClientDto client;
+    private UserDto user;
     private HotelDto hotel;
     private RoomDto room;
     private Integer rating;

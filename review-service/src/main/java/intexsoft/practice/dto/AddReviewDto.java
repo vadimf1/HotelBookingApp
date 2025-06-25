@@ -16,7 +16,7 @@ public class AddReviewDto {
     private UUID id;
 
     @NotNull
-    private UUID clientId;
+    private UUID userId;
 
     @NotNull
     private UUID hotelId;

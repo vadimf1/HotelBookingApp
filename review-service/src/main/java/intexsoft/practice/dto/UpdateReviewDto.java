@@ -9,7 +9,7 @@ import java.util.UUID;
 @Builder
 public class UpdateReviewDto {
     private UUID id;
-    private UUID clientId;
+    private UUID userId;
     private UUID hotelId;
     private UUID roomId;
     private Integer rating;

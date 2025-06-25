@@ -7,6 +7,6 @@ import java.util.UUID;
 
 @Data
 @Builder
-public class ClientDto {
+public class UserDto {
     private UUID id;
 }
