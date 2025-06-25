@@ -1,0 +1,3 @@
+rootProject.name = 'hotel-booking-app'
+
+include 'hotel-service', 'hotel-kafka-producer-lib', 'hotel-dto-lib'

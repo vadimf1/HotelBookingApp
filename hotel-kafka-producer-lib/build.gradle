@@ -1,0 +1,26 @@
+plugins {
+    id 'java'
+}
+
+group = 'intexsoft.practice'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation project(':hotel-dto-lib')
+
+    implementation 'org.springframework:spring-context:6.2.7'
+    implementation 'org.springframework.boot:spring-boot-configuration-processor:3.5.0'
+    implementation 'org.springframework.boot:spring-boot:3.5.0'
+    implementation 'org.springframework.kafka:spring-kafka:3.3.3'
+
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+}
+
+test {
+    useJUnitPlatform()
+}
