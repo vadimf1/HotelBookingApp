@@ -64,6 +64,7 @@ services:
       - kafka
       - mailhog
     environment:
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
       CONSUMER_BOOKING_BOOTSTRAP_SERVERS: kafka:29092
       CONSUMER_LOGIN_BOOTSTRAP_SERVERS: kafka:29092
       SPRING_PROFILES_ACTIVE: prod
