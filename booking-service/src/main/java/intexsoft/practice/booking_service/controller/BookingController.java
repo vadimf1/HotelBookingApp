@@ -3,10 +3,10 @@ package intexsoft.practice.booking_service.controller;
 import intexsoft.practice.booking_service.dto.BookingRequestDTO;
 import intexsoft.practice.booking_service.dto.BookingResponseDTO;
 import intexsoft.practice.booking_service.dto.RoomAvailabilityDTO;
-import intexsoft.practice.booking_service.jwt.util.JwtUtil;
 import intexsoft.practice.booking_service.service.BookingService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -16,26 +16,17 @@ import java.util.UUID;
 public class BookingController {
 
     private final BookingService bookingService;
-    private final JwtUtil jwtUtil;
 
     @Autowired
-    public BookingController(BookingService bookingService, JwtUtil jwtUtil) {
+    public BookingController(BookingService bookingService) {
         this.bookingService = bookingService;
-        this.jwtUtil = jwtUtil;
     }
 
     @PostMapping
     public BookingResponseDTO createBooking(@Valid @RequestBody BookingRequestDTO requestDTO,
-                                            @RequestHeader("Authorization") String authHeader) {
-        String token;
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            token = authHeader.substring(7); // Убираем "Bearer " если есть
-        } else {
-            token = authHeader; // Используем как есть
-        }
+                                            @AuthenticationPrincipal String userIdStr) {
 
-        UUID userId = UUID.fromString(jwtUtil.extractUserId(token));
-
+        UUID userId = UUID.fromString(userIdStr);
         return bookingService.createBooking(requestDTO, userId);
     }
 
