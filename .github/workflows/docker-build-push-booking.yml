@@ -1,7 +1,7 @@
 name: Build and Push Booking Image
 on:
   push:
-    braches:
+    branches:
       - dev
     paths:
       - 'booking-service/**'
