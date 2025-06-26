@@ -1,5 +1,19 @@
 --liquibase formatted sql
 
+--changeset vadim:insert_clients
+INSERT INTO user_service.clients (id, name)
+VALUES
+    (gen_random_uuid(), 'name1'),
+    (gen_random_uuid(), 'name2'),
+    (gen_random_uuid(), 'name3'),
+    (gen_random_uuid(), 'name4'),
+    (gen_random_uuid(), 'name5'),
+    (gen_random_uuid(), 'name6'),
+    (gen_random_uuid(), 'name7'),
+    (gen_random_uuid(), 'name8'),
+    (gen_random_uuid(), 'name9'),
+    (gen_random_uuid(), 'name10');
+
 --changeset vadim:insert_hotel_statuses
 INSERT INTO hotel_service.hotel_statuses (id, code, name)
 VALUES
