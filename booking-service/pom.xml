@@ -152,6 +152,8 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
+
+		<finalName>booking-service</finalName>
 	</build>
 
 </project>

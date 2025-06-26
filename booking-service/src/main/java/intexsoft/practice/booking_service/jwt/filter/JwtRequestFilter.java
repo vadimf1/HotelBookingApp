@@ -11,7 +11,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -33,7 +32,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         final String authHeader = request.getHeader("Authorization");
 
         String token;
-        UUID userId = null;
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             token = authHeader.substring(7);
@@ -47,7 +45,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 return;
             }
 
-            userId = UUID.fromString(jwtUtil.extractUserId(token));
+            UUID userId = UUID.fromString(jwtUtil.extractUserId(token));
 
             Authentication authentication = new UsernamePasswordAuthenticationToken(
                     userId.toString(),

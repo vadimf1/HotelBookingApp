@@ -1,0 +1,41 @@
+name: Build and Push Booking Image
+on:
+  push:
+    braches:
+      - dev
+    paths:
+      - 'booking-service/**'
+      - 'booking-service-kafka-dto/**'
+      - 'booking-service-kafka-producer/**'
+      - '.github/workflows/docker-build-push-booking.yml'
+
+jobs:
+  build-and-push:
+    runs-on: ubunte-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Build all modules (with dto & producer)
+        run: mvn clean install -DskipTests
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME_BOOKING }}
+          password: ${{ secrets.DOCKER_PASSWORD_BOOKING }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./booking-service
+          file: ./booking-service/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME_BOOKING }}/booking-service:latest
