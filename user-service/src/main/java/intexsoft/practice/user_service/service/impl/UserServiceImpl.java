@@ -5,6 +5,7 @@ import intexsoft.practice.kafka_producer_lib.service.KafkaProducerService;
 import intexsoft.practice.user_service.dto.request.LoginUserRequest;
 import intexsoft.practice.user_service.dto.request.RegisterUserRequest;
 import intexsoft.practice.user_service.dto.response.JwtAuthenticationResponse;
+import intexsoft.practice.user_service.dto.response.UserEmailResponse;
 import intexsoft.practice.user_service.entity.User;
 import intexsoft.practice.user_service.entity.enums.UserRole;
 import intexsoft.practice.user_service.mapper.UserMapper;
@@ -12,7 +13,6 @@ import intexsoft.practice.user_service.repository.UserRepository;
 import intexsoft.practice.user_service.security.JwtProvider;
 import intexsoft.practice.user_service.security.UserDetailsImpl;
 import intexsoft.practice.user_service.service.UserService;
-import jakarta.security.auth.message.AuthException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -94,6 +93,14 @@ public class UserServiceImpl implements UserService {
             log.error("Login error for email: {}", loginRequest.getEmail(), e);
             throw new RuntimeException("Login failed");
         }
+    }
+
+    @Override
+    public UserEmailResponse getUserEmailById(UUID userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        return new UserEmailResponse(user.getEmail());
     }
 
     private String getClientIp(HttpServletRequest request) {
