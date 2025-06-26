@@ -5,35 +5,40 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import intexsoft.practice.user_service.config.JwtProperties;
 import intexsoft.practice.user_service.entity.enums.UserRole;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 
 @Component
+@RequiredArgsConstructor
 public class JwtProvider {
 
-    @Value("${spring.security.jwt.secret}")
-    private String jwtSecret;
+    private final JwtProperties jwtProperties;
 
-    @Value("${spring.security.jwt.expiration}")
-    private long jwtExpiration;
+    public String generateToken(UUID id, String email, Set<UserRole> roles) {
+        List<String> roleNames = roles.stream()
+                .map(UserRole::name)
+                .toList();
 
-    public String generateToken(String email, UserRole role) {
         return JWT.create()
-                .withSubject("User details")
+                .withSubject(id.toString())
                 .withClaim("email", email)
-                .withClaim("role", role.name())
+                .withClaim("roles", roleNames)
                 .withIssuedAt(new Date())
                 .withIssuer("Hotel Booking Application")
-                .withExpiresAt(new Date(System.currentTimeMillis() + jwtExpiration * 1000))
-                .sign(Algorithm.HMAC256(jwtSecret));
+                .withExpiresAt(new Date(System.currentTimeMillis() + jwtProperties.getExpiration() * 1000))
+                .sign(Algorithm.HMAC256(jwtProperties.getSecret()));
     }
 
     public String getEmailFromToken(String token) throws JWTVerificationException {
-        JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(jwtSecret))
+        JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(jwtProperties.getSecret()))
                 .withSubject("User details")
                 .withIssuer("Hotel Booking Application")
                 .build();

@@ -14,6 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Set;
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -32,9 +34,10 @@ public class UserServiceImpl implements UserService {
 
         User user = userMapper.toEntity(registerUserRequest);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRole(UserRole.ROLE_USER);
+        user.setRoles(Set.of(UserRole.ROLE_USER));
         userRepository.save(user);
 
-        return new JwtAuthenticationResponse(jwtProvider.generateToken(user.getEmail(), user.getRole()));
+        return new JwtAuthenticationResponse(jwtProvider.generateToken(user.getId(),
+                user.getEmail(), user.getRoles()));
     }
 }

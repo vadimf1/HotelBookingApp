@@ -16,11 +16,11 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/register")
+    @PostMapping("api/auth/register")
     public ResponseEntity<JwtAuthenticationResponse> registerUser(
             @Valid @RequestBody RegisterUserRequest registerUserRequest) {
         return ResponseEntity.ok(userService.register(registerUserRequest));
     }
 
-
+    
 }
