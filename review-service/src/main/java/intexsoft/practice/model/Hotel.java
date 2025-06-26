@@ -17,13 +17,10 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "clients", schema = "user_service")
-public class Client {
+@Table(name = "hotels", schema = "hotel_service")
+public class Hotel {
     @Id
     @UuidGenerator
     @Column(name = "id")
     private UUID id;
-
-    @Column(name = "name")
-    private String name;
 }

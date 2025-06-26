@@ -20,6 +20,6 @@ tasks.register('buildParentPom', Exec) {
 
 tasks.register('buildAll') {
     group = 'build'
-    description = 'Build all projects (root pom + hotel-service)'
-    dependsOn buildParentPom, ':hotel-service:build'
+    description = 'Build all projects'
+    dependsOn buildParentPom, ':hotel-service:build' ':review-service:build'
 }
