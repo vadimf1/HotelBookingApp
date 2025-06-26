@@ -1,0 +1,42 @@
+name: Build and Push Notification Docker Image
+
+on:
+  push:
+    branches:
+      - dev
+    paths:
+      - 'user-service'
+      - 'notification-kafka-dto-lib/**'
+      - 'notification-kafka-producer-lib/**'
+      - '.github/workflows/docker-build-push-user-service.yml'
+  workflow_dispatch:
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Build all modules (with dto & producer)
+        run: mvn clean install -DskipTests
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME_NIKITA }}
+          password: ${{ secrets.DOCKER_PASSWORD_NIKITA }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./user-service
+          file: ./user-service/Dockerfile
+          push: true
+          tags: coldsteeze/user-service:latest
