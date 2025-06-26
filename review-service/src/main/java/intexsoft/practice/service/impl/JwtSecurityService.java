@@ -1,13 +1,14 @@
 package intexsoft.practice.service.impl;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import intexsoft.practice.exception.ServiceException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.List;
 
@@ -15,37 +16,29 @@ import java.util.List;
 public class JwtSecurityService {
 
     @Value("${jwt.secret}")
-    private String SECRET_KEY;
+    private String secret;
 
-    private SecretKey getSigningKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
-        return Keys.hmacShaKeyFor(keyBytes);
-    }
-
-    private Claims extractAllClaims(String token) {
-        return Jwts.parser()
-                .verifyWith(getSigningKey())
-                .build()
-                .parseSignedClaims(token)
-                .getPayload();
+    private JWTVerifier getVerifier() {
+        return JWT.require(Algorithm.HMAC256(secret))
+                .withIssuer("Hotel Booking Application")
+                .build();
     }
 
     public boolean validateToken(String token) {
         try {
-            Claims claims = extractAllClaims(token);
-            Date expiration = claims.getExpiration();
+            DecodedJWT jwt = getVerifier().verify(token);
+            Date expiration = jwt.getExpiresAt();
             return expiration == null || expiration.after(new Date());
-        } catch (Exception e) {
-            return false;
+        } catch (JWTVerificationException e) {
+            throw new ServiceException("JWT verification failed", e);
         }
     }
 
     public String extractUserId(String token) {
-        return extractAllClaims(token).getSubject();
+        return getVerifier().verify(token).getSubject();
     }
 
     public List<String> extractRoles(String token) {
-        return extractAllClaims(token).get("roles", List.class);
+        return getVerifier().verify(token).getClaim("roles").asList(String.class);
     }
 }
-
