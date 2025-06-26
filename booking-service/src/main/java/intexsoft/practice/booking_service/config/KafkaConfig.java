@@ -32,6 +32,7 @@ public class KafkaConfig {
         return factory;
     }
 
+
     @Bean
     public ConsumerFactory<String, KafkaResponseRoomDTO> consumerFactory() {
         Map<String,Object> props = new HashMap<>();
