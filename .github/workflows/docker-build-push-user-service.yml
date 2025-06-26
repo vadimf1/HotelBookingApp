@@ -5,7 +5,7 @@ on:
     branches:
       - dev
     paths:
-      - 'user-service'
+      - 'user-service/**'
       - 'notification-kafka-dto-lib/**'
       - 'notification-kafka-producer-lib/**'
       - '.github/workflows/docker-build-push-user-service.yml'
