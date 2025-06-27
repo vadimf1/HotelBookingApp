@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: Authorization
+  datasource:
+    url: jdbc:postgresql://localhost:5432/Hotel
+    username: postgres
+    password: gfhjkm12
+  jpa:
+    hibernate:
+      show-sql: true
+    generate-ddl: false
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-1.yaml
+    enabled: true
+
