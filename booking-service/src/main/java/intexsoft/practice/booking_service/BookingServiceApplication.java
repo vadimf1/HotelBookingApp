@@ -7,7 +7,8 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 @ComponentScan({
 		"intexsoft.practice.booking_service",
-		"intexsoft.practice.booking_service_kafka_producer"
+		"intexsoft.practice.booking_service_kafka_producer",
+		"intexsoft.practice.booking_service_kafka_dto"
 })
 public class BookingServiceApplication {
 

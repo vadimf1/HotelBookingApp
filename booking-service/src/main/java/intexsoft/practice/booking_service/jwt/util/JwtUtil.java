@@ -1,7 +1,6 @@
 package intexsoft.practice.booking_service.jwt.util;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +14,7 @@ public class JwtUtil {
     private String SECRET_KEY;
 
     public String extractUserId(String token) {
-        return extractClaim(token, Claims::getId);
+        return extractClaim(token, Claims::getSubject);
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
@@ -40,6 +39,6 @@ public class JwtUtil {
     }
 
     public Boolean validateToken(String token) {
-        return isTokenExpired(token);
+        return !isTokenExpired(token);
     }
 }

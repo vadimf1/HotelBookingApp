@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>intexsoft.practice</groupId>
-	<artifactId>booking_service</artifactId>
+	<artifactId>booking-service</artifactId>
 	<version>1.0.0</version>
-	<name>booking_service</name>
+	<name>booking-service</name>
 	<description>intexsoft practice booking services</description>
 	<url/>
 	<licenses>
@@ -127,6 +127,11 @@
 			<version>0.11.5</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+
     </dependencies>
 	<dependencyManagement>
 		<dependencies>
@@ -147,6 +152,8 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
+
+		<finalName>booking-service</finalName>
 	</build>
 
 </project>
